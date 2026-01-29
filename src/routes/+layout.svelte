@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import { calcLinks } from '$lib/nav'
 
 	let { children } = $props();
 </script>
@@ -15,8 +16,9 @@
         <details>
           <summary>Calcs</summary>
           <ul class="bg-base-100 rounded-t-none p-2">
-            <li><a href='/'>Lag Time</a></li>
-            <li><a href='/'>Pressure Drop</a></li>
+              {#each calcLinks as calcLink (calcLink.id)}
+                <li><a href={calcLink.href}>{calcLink.label}</a></li>
+              {/each}
           </ul>
         </details>
       </li>
