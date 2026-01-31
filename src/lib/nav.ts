@@ -10,7 +10,7 @@ export interface SiteConfig {
 }
 
 export const calcLinks: CalcLink[] = [
-	{ href: '/', label: 'Test', id: 'lag-time' },
+	{ href: '/lag-time', label: 'Lag Time', id: 'lag-time' },
 	{ href: '/pressure-drop', label: 'Pressure Drop', id: 'pressure-drop' }
 ];
 
