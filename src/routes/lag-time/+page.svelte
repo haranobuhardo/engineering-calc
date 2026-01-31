@@ -161,7 +161,7 @@
 		<!-- Tube Inputs -->
 		<Row class="mb-4 items-end">
 			<Column sm={3} md={5} lg={5}>
-				<NumberInput label="Outside Diameter (OD)" bind:value={odValue} />
+				<NumberInput labelText="Outside Diameter (OD)" bind:value={odValue} />
 			</Column>
 			<Column sm={1} md={3} lg={3}>
 				<Select bind:selected={odUnit} labelText="Unit">
@@ -173,7 +173,7 @@
 		</Row>
 		<Row class="mb-4 items-end">
 			<Column sm={3} md={5} lg={5}>
-				<NumberInput label="Wall Thickness" bind:value={wallValue} />
+				<NumberInput labelText="Wall Thickness (t)" bind:value={wallValue} />
 			</Column>
 			<Column sm={1} md={3} lg={3}>
 				<Select bind:selected={wallUnit} labelText="Unit">
@@ -185,7 +185,7 @@
 		</Row>
 		<Row class="mb-4 items-end">
 			<Column sm={3} md={5} lg={5}>
-				<NumberInput label="Length" bind:value={lengthValue} />
+				<NumberInput labelText="Length (L)" bind:value={lengthValue} />
 			</Column>
 			<Column sm={1} md={3} lg={3}>
 				<Select bind:selected={lengthUnit} labelText="Unit">
@@ -199,7 +199,7 @@
 		<!-- Chamber Inputs -->
 		<Row class="mb-4 items-end">
 			<Column sm={3} md={5} lg={5}>
-				<NumberInput label="Known Volume" bind:value={volumeValue} />
+				<NumberInput labelText="Known Volume (V)" bind:value={volumeValue} />
 			</Column>
 			<Column sm={1} md={3} lg={3}>
 				<Select bind:selected={volumeUnit} labelText="Unit">
@@ -214,7 +214,7 @@
 	<!-- Common Inputs -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput label="Flow Rate" bind:value={flowRateValue} />
+			<NumberInput labelText="Flow Rate (Q)" bind:value={flowRateValue} />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
 			<Select bind:selected={flowRateUnit} labelText="Unit">
@@ -227,7 +227,7 @@
 
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput label="Pressure (Flowing)" bind:value={pressureInValue} />
+			<NumberInput labelText="Pressure (Flowing) (Pin)" bind:value={pressureInValue} />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
 			<Select bind:selected={pressureInUnit} labelText="Unit">
@@ -240,7 +240,7 @@
 
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput label="Pressure (Outlet)" bind:value={pressureOutValue} />
+			<NumberInput labelText="Pressure (Outlet) (Pout)" bind:value={pressureOutValue} />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
 			<Select bind:selected={pressureOutUnit} labelText="Unit">
@@ -253,13 +253,13 @@
 
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput label="First Order Lag" bind:value={lagOrder} />
+			<NumberInput labelText="First Order Lag (Lag)" bind:value={lagOrder} />
 		</Column>
 	</Row>
 
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput label="Additional Time (sec)" bind:value={additionalTime} />
+			<NumberInput labelText="Additional Time (t_add)" bind:value={additionalTime} />
 		</Column>
 	</Row>
 

@@ -128,7 +128,7 @@
 	<!-- Outside Diameter (OD) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput label="Outside Diameter (OD)" bind:value={outsideDiameterValue} />
+			<NumberInput labelText="Outside Diameter (OD)" bind:value={outsideDiameterValue} />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
 			<Select bind:selected={outsideDiameterUnit} labelText="Unit">
@@ -142,7 +142,7 @@
 	<!-- Length (l) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput label="Length (l)" bind:value={lengthValue} />
+			<NumberInput labelText="Length (l)" bind:value={lengthValue} />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
 			<Select bind:selected={lengthUnit} labelText="Unit">
@@ -156,7 +156,7 @@
 	<!-- Wall Thickness (sch) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput label="Wall Thickness" bind:value={wallThicknessValue} />
+			<NumberInput labelText="Wall Thickness (t)" bind:value={wallThicknessValue} />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
 			<Select bind:selected={wallThicknessUnit} labelText="Unit">
@@ -170,7 +170,7 @@
 	<!-- Absolute Roughness (k) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput label="Absolute Roughness (k)" bind:value={absRoughnessValue} />
+			<NumberInput labelText="Absolute Roughness (k)" bind:value={absRoughnessValue} />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
 			<Select bind:selected={absRoughnessUnit} labelText="Unit">
@@ -184,7 +184,7 @@
 	<!-- Flow Rate (Q) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput label="Flow Rate (Q)" bind:value={flowRateValue} />
+			<NumberInput labelText="Flow Rate (Q)" bind:value={flowRateValue} />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
 			<Select bind:selected={flowRateUnit} labelText="Unit">
@@ -198,7 +198,7 @@
 	<!-- Viscosity (mu) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput label="Dynamic Viscosity (μ)" bind:value={dynamicViscValue} />
+			<NumberInput labelText="Dynamic Viscosity (μ)" bind:value={dynamicViscValue} />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
 			<Select bind:selected={dynamicViscUnit} labelText="Unit">
@@ -212,7 +212,7 @@
 	<!-- Density (rho) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput label="Density (ρ)" bind:value={densityValue} />
+			<NumberInput labelText="Density (ρ)" bind:value={densityValue} />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
 			<Select bind:selected={densityUnit} labelText="Unit">
