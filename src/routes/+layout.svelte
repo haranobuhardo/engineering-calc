@@ -1,29 +1,42 @@
 <script lang="ts">
 	import '../app.css';
-	import { calcLinks } from '$lib/nav'
+	import 'carbon-components-svelte/css/g10.css';
+	import {
+		Header,
+		HeaderUtilities,
+		HeaderGlobalAction,
+		SideNav,
+		SideNavItems,
+		SideNavLink,
+		Content,
+		SkipToContent
+	} from 'carbon-components-svelte';
+	import { calcLinks } from '$lib/nav';
+	import { page } from '$app/stores';
 
+	let isSideNavOpen = $state(false);
 	let { children } = $props();
 </script>
 
-<div class="navbar bg-base-100 shadow-sm">
-  <div class="flex-1">
-    <a class="btn btn-ghost text-xl" href="/">Hardo's Calc</a>
-  </div>
-  <div class="flex-none">
-    <ul class="menu menu-horizontal px-1">
-      <li><a href='/'>About Me</a></li>
-      <li>
-        <details>
-          <summary>Calcs</summary>
-          <ul class="bg-base-100 rounded-t-none p-2">
-              {#each calcLinks as calcLink (calcLink.id)}
-                <li><a href={calcLink.href}>{calcLink.label}</a></li>
-              {/each}
-          </ul>
-        </details>
-      </li>
-    </ul>
-  </div>
-</div>
+<Header company="Hardo's" platformName="Calc" bind:isSideNavOpen>
+	<svelte:fragment slot="skip-to-content">
+		<SkipToContent />
+	</svelte:fragment>
+</Header>
 
-{@render children()}
+<SideNav bind:isOpen={isSideNavOpen}>
+	<SideNavItems>
+		<SideNavLink href="/" text="Home" isSelected={$page.url.pathname === '/'} />
+		{#each calcLinks as calcLink (calcLink.id)}
+			<SideNavLink
+				href={calcLink.href}
+				text={calcLink.label}
+				isSelected={$page.url.pathname === calcLink.href}
+			/>
+		{/each}
+	</SideNavItems>
+</SideNav>
+
+<Content>
+	{@render children()}
+</Content>

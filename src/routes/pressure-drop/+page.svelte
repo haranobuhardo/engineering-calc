@@ -1,203 +1,261 @@
 <script lang="ts">
-  import {siteConfig} from '$lib/nav';
-  import {convertLength, convertFlowRate, convertViscosity, convertDensity} from './convert'
+	import { siteConfig } from '$lib/nav';
+	import { convertLength, convertFlowRate, convertViscosity, convertDensity } from './convert';
+	import {
+		Grid,
+		Row,
+		Column,
+		NumberInput,
+		Select,
+		SelectItem,
+		Button,
+		Tile
+	} from 'carbon-components-svelte';
 
-  interface UnitOption {
-    value: string,
-    text: string,
-    scale?: number,
-  }
-  
-  let outsideDiameterValue = $state(0.25);
-  let outsideDiameterUnit = $state("in");
-  let lengthValue = $state(1);
-  let lengthUnit = $state("m");
-  let wallThicknessValue = $state(0.035);
-  let wallThicknessUnit = $state("in");
-  let absRoughnessValue = $state(0.0015);
-  let absRoughnessUnit = $state("mm");
-  let flowRateValue = $state(25);
-  let flowRateUnit = $state("lpm");
-  let dynamicViscValue = $state(0.03);
-  let dynamicViscUnit = $state("cps");
-  let densityValue = $state(0.9);
-  let densityUnit = $state("kg/m3");
+	interface UnitOption {
+		value: string;
+		text: string;
+		scale?: number;
+	}
 
-  let reynoldsNumber = $state(0);
+	let outsideDiameterValue = $state(0.25);
+	let outsideDiameterUnit = $state('in');
+	let lengthValue = $state(1);
+	let lengthUnit = $state('m');
+	let wallThicknessValue = $state(0.035);
+	let wallThicknessUnit = $state('in');
+	let absRoughnessValue = $state(0.0015);
+	let absRoughnessUnit = $state('mm');
+	let flowRateValue = $state(25);
+	let flowRateUnit = $state('lpm');
+	let dynamicViscValue = $state(0.03);
+	let dynamicViscUnit = $state('cps');
+	let densityValue = $state(0.9);
+	let densityUnit = $state('kg/m3');
 
-  let lengthUnits: UnitOption[] = [
-    {value: "in", text: "in"},
-    {value: "ft", text: "ft"},
-    {value: "mm", text: "mm"},
-    {value: "m", text: "m"},
-  ]
+	let reynoldsNumber = $state(0);
 
-  let flowRateUnits: UnitOption[] = [
-    {value: "lpm", text: "lpm"},
-    {value: "lph", text: "lph"},
-    {value: "bpd", text: "bpd"},
-  ]
+	let lengthUnits: UnitOption[] = [
+		{ value: 'in', text: 'in' },
+		{ value: 'ft', text: 'ft' },
+		{ value: 'mm', text: 'mm' },
+		{ value: 'm', text: 'm' }
+	];
 
-  let dynamicViscUnits: UnitOption[] = [
-    {value: "cps", text: "cP"},
-    {value: "kg/m-s", text: "kg/m-s"},
-  ]
+	let flowRateUnits: UnitOption[] = [
+		{ value: 'lpm', text: 'lpm' },
+		{ value: 'lph', text: 'lph' },
+		{ value: 'bpd', text: 'bpd' }
+	];
 
-  let densityUnits: UnitOption[] = [
-    {value: "lbs/ft3", text: "lbs/ft3"},
-    {value: "kg/m3", text: "kg/m3"},
-  ]
+	let dynamicViscUnits: UnitOption[] = [
+		{ value: 'cps', text: 'cP' },
+		{ value: 'kg/m-s', text: 'kg/m-s' }
+	];
 
-  function calcID(outsideDiameter: number, wallThickness: number): number{
-    return outsideDiameter - (2*wallThickness)
-  }
+	let densityUnits: UnitOption[] = [
+		{ value: 'lbs/ft3', text: 'lbs/ft3' },
+		{ value: 'kg/m3', text: 'kg/m3' }
+	];
 
-  function calcVelocity(insideDiameter: number, flowRate: number): number{
-    // insideDiameter: mm
-    // flowRate: LPM (liter per minute)
-    let area = 1/4 * 3.14 * (insideDiameter/1000)**2 // m**2
-    let flowRateConv = flowRate / 1000 / 60 // m**3/second
-    return flowRateConv / area // in m/s
-  }
+	function calcID(outsideDiameter: number, wallThickness: number): number {
+		return outsideDiameter - 2 * wallThickness;
+	}
 
-  function calcRelRoughness(absRoughness: number, insideDiameter: number): number {
-    // absRoughness: meter (m)
-    // insideDiameter: meter (m)
-    return absRoughness / insideDiameter
-  }
+	function calcVelocity(insideDiameter: number, flowRate: number): number {
+		// insideDiameter: mm
+		// flowRate: LPM (liter per minute)
+		let area = (1 / 4) * 3.14 * (insideDiameter / 1000) ** 2; // m**2
+		let flowRateConv = flowRate / 1000 / 60; // m**3/second
+		return flowRateConv / area; // in m/s
+	}
 
-  function calcReynoldsNumber(insideDiameter: number, density: number, velocity: number, viscosity: number): number {
-    // insideDiameter: meter (m)
-    // density: kg/m3
-    // velocity: m/s
-    // viscosity: kg/(m.s)
-    return insideDiameter * density * velocity / viscosity
-  }
+	function calcRelRoughness(absRoughness: number, insideDiameter: number): number {
+		// absRoughness: meter (m)
+		// insideDiameter: meter (m)
+		return absRoughness / insideDiameter;
+	}
 
-  function calculatePressureDrop(){
-    let convertedOD = convertLength(outsideDiameterValue, outsideDiameterUnit)
-    let convertedThickness = convertLength(wallThicknessValue, wallThicknessUnit)
-    let convertedFlowRate = convertFlowRate(flowRateValue, flowRateUnit)
-    let convertedAbsRoughness = convertLength(absRoughnessValue, absRoughnessUnit)
-    let convertedViscosity = convertViscosity(dynamicViscValue, dynamicViscUnit)
-    let convertedDensity = convertDensity(densityValue, densityUnit)
-    
-    let insideDiameter: number = calcID(convertedOD, convertedThickness) // in mm
-    let velocity: number = calcVelocity(insideDiameter, convertedFlowRate) // in m/s
-    let relativeRoughness: number = calcRelRoughness(convertedAbsRoughness, insideDiameter)
+	function calcReynoldsNumber(
+		insideDiameter: number,
+		density: number,
+		velocity: number,
+		viscosity: number
+	): number {
+		// insideDiameter: meter (m)
+		// density: kg/m3
+		// velocity: m/s
+		// viscosity: kg/(m.s)
+		return (insideDiameter * density * velocity) / viscosity;
+	}
 
-    reynoldsNumber = calcReynoldsNumber(insideDiameter/1000, convertedDensity, velocity, convertedViscosity)
+	function calculatePressureDrop() {
+		let convertedOD = convertLength(outsideDiameterValue, outsideDiameterUnit);
+		let convertedThickness = convertLength(wallThicknessValue, wallThicknessUnit);
+		let convertedFlowRate = convertFlowRate(flowRateValue, flowRateUnit);
+		let convertedAbsRoughness = convertLength(absRoughnessValue, absRoughnessUnit);
+		let convertedViscosity = convertViscosity(dynamicViscValue, dynamicViscUnit);
+		let convertedDensity = convertDensity(densityValue, densityUnit);
 
-    console.log(insideDiameter)
-    console.log(velocity)
-    console.log(relativeRoughness)
-    console.log(reynoldsNumber)
-  }
+		let insideDiameter: number = calcID(convertedOD, convertedThickness); // in mm
+		let velocity: number = calcVelocity(insideDiameter, convertedFlowRate); // in m/s
+		let relativeRoughness: number = calcRelRoughness(convertedAbsRoughness, insideDiameter);
 
+		reynoldsNumber = calcReynoldsNumber(
+			insideDiameter / 1000,
+			convertedDensity,
+			velocity,
+			convertedViscosity
+		);
+	}
 </script>
 
 <svelte:head>
-  <title>{siteConfig.title} - Pressure Drop</title>
-  <meta name={siteConfig.description} content={siteConfig.description} />
+	<title>{siteConfig.title} - Pressure Drop</title>
+	<meta name={siteConfig.description} content={siteConfig.description} />
 </svelte:head>
 
-<div id="calc" class='flex flex-col justify-center items-center space-y-4 my-4 w-full'>
-  <div class='flex flex-col justify-center items-center space-y-2 w-3/4 sm:w-1/2'>
-    <article class='prose text-center mb-4'><h1>Pressure Drop Calculator</h1></article>
-    <!-- Input section -->
-    <!-- Outside Diameter (OD) -->
-    <fieldset class="fieldset w-full">
-      <legend class="fieldset-legend">Outside Diameter (OD)</legend>
-      <div class="flex w-full space-x-1">
-        <input type="number" class="w-64 flex-auto input w-full" placeholder="Tube or pipe outside diameter" bind:value={outsideDiameterValue}/>
-        <select class="w-16 px-2 sm:w-32 flex-auto select" bind:value={outsideDiameterUnit}>
-          {#each lengthUnits as lengthUnit}
-            <option value={lengthUnit.value}>{lengthUnit.text}</option>
-          {/each}
-        </select>
-      </div>
-    </fieldset>
-    <!-- Length (l) -->
-    <fieldset class="fieldset w-full">
-      <legend class="fieldset-legend">Length (l)</legend>
-      <div class="flex w-full space-x-1">
-        <input type="number" class="w-64 flex-auto input w-full" placeholder="Tube or pipe length" bind:value={lengthValue}/>
-        <select class="w-16 px-2 sm:w-32 flex-auto select" bind:value={lengthUnit}>
-          {#each lengthUnits as lengthUnit}
-            <option value={lengthUnit.value}>{lengthUnit.text}</option>
-          {/each}
-        </select>
-      </div>
-    </fieldset>
-    <!-- Wall Thickness (sch) -->
-    <fieldset class="fieldset w-full">
-      <legend class="fieldset-legend">Wall Thickness</legend>
-      <div class="flex w-full space-x-1">
-        <input type="number" class="w-64 flex-auto input w-full" placeholder="Tube or pipe wall thickness" bind:value={wallThicknessValue}/>
-        <select class="w-16 px-2 sm:w-32 flex-auto select" bind:value={wallThicknessUnit}>
-          {#each lengthUnits as lengthUnit}
-            <option value={lengthUnit.value}>{lengthUnit.text}</option>
-          {/each}
-        </select>
-      </div>
-    </fieldset>
-    <!-- Absolute Roughness (k) -->
-    <fieldset class="fieldset w-full">
-      <legend class="fieldset-legend">Absolute Roughness (k)</legend>
-      <div class="flex w-full space-x-1">
-        <input type="number" class="w-64 flex-auto input w-full" placeholder="Tube or pipe abs roughness" bind:value={absRoughnessValue}/>
-        <select class="w-16 px-2 sm:w-32 flex-auto select" bind:value={absRoughnessUnit}>
-          {#each lengthUnits as lengthUnit}
-            <option value={lengthUnit.value}>{lengthUnit.text}</option>
-          {/each}
-        </select>
-      </div>
-    </fieldset>
-    <!-- Flow Rate (Q) -->
-    <fieldset class="fieldset w-full">
-      <legend class="fieldset-legend">Flow Rate (Q)</legend>
-      <div class="flex w-full space-x-1">
-        <input type="number" class="w-64 flex-auto input w-full" placeholder="Fluid's flow rate" bind:value={flowRateValue}/>
-        <select class="w-16 px-2 sm:w-32 flex-auto select" bind:value={flowRateUnit}>
-          {#each flowRateUnits as flowRateUnit}
-            <option value={flowRateUnit.value}>{flowRateUnit.text}</option>
-          {/each}
-        </select>
-      </div>
-    </fieldset>
-    <!-- Viscosity (mu) -->
-    <fieldset class="fieldset w-full">
-      <legend class="fieldset-legend">Dynamic Viscosity (μ)</legend>
-      <div class="flex w-full space-x-1">
-        <input type="number" class="w-64 flex-auto input w-full" placeholder="Fluid's viscosity" bind:value={dynamicViscValue}/>
-        <select class="w-16 px-2 sm:w-32 flex-auto select" bind:value={dynamicViscUnit}>
-          {#each dynamicViscUnits as dynamicViscUnit}
-            <option value={dynamicViscUnit.value}>{dynamicViscUnit.text}</option>
-          {/each}
-        </select>
-      </div>
-    </fieldset>
-    <!-- Density (rho) -->
-    <fieldset class="fieldset w-full">
-      <legend class="fieldset-legend">Density (ρ)</legend>
-      <div class="flex w-full space-x-1">
-        <input type="number" class="w-64 flex-auto input w-full" placeholder="Fluid's density" bind:value={densityValue}/>
-        <select class="w-16 px-2 sm:w-32 flex-auto select" bind:value={densityUnit}>
-          {#each densityUnits as densityUnit}
-            <option value={densityUnit.value}>{densityUnit.text}</option>
-          {/each}
-        </select>
-      </div>
-    </fieldset>
-    <button class="btn w-full mt-2" onclick={calculatePressureDrop}>
-      Calculate
-    </button>
-    {#if reynoldsNumber > 0}
-    <div class='flex flex-col justify-center items-center space-y-1 mt-4 w-full'>
-      <article class='prose text-center mb-2'><h2>Result:</h2></article>
-      <div>Reynold number: {reynoldsNumber.toFixed(3)}</div>
-      <div>Flow type: <b>{reynoldsNumber > 4000 ? "Turbulent" : "Laminar"}</b></div>
-    </div>
-    {/if}
-  </div>
-</div>
+<Grid>
+	<Row>
+		<Column>
+			<h1 class="landing-page__heading">Pressure Drop Calculator</h1>
+		</Column>
+	</Row>
+
+	<!-- Input section -->
+	<!-- Outside Diameter (OD) -->
+	<Row class="mb-4 items-end">
+		<Column sm={3} md={5} lg={5}>
+			<NumberInput label="Outside Diameter (OD)" bind:value={outsideDiameterValue} />
+		</Column>
+		<Column sm={1} md={3} lg={3}>
+			<Select bind:selected={outsideDiameterUnit} labelText="Unit">
+				{#each lengthUnits as lengthUnit}
+					<SelectItem value={lengthUnit.value} text={lengthUnit.text} />
+				{/each}
+			</Select>
+		</Column>
+	</Row>
+
+	<!-- Length (l) -->
+	<Row class="mb-4 items-end">
+		<Column sm={3} md={5} lg={5}>
+			<NumberInput label="Length (l)" bind:value={lengthValue} />
+		</Column>
+		<Column sm={1} md={3} lg={3}>
+			<Select bind:selected={lengthUnit} labelText="Unit">
+				{#each lengthUnits as lengthUnit}
+					<SelectItem value={lengthUnit.value} text={lengthUnit.text} />
+				{/each}
+			</Select>
+		</Column>
+	</Row>
+
+	<!-- Wall Thickness (sch) -->
+	<Row class="mb-4 items-end">
+		<Column sm={3} md={5} lg={5}>
+			<NumberInput label="Wall Thickness" bind:value={wallThicknessValue} />
+		</Column>
+		<Column sm={1} md={3} lg={3}>
+			<Select bind:selected={wallThicknessUnit} labelText="Unit">
+				{#each lengthUnits as lengthUnit}
+					<SelectItem value={lengthUnit.value} text={lengthUnit.text} />
+				{/each}
+			</Select>
+		</Column>
+	</Row>
+
+	<!-- Absolute Roughness (k) -->
+	<Row class="mb-4 items-end">
+		<Column sm={3} md={5} lg={5}>
+			<NumberInput label="Absolute Roughness (k)" bind:value={absRoughnessValue} />
+		</Column>
+		<Column sm={1} md={3} lg={3}>
+			<Select bind:selected={absRoughnessUnit} labelText="Unit">
+				{#each lengthUnits as lengthUnit}
+					<SelectItem value={lengthUnit.value} text={lengthUnit.text} />
+				{/each}
+			</Select>
+		</Column>
+	</Row>
+
+	<!-- Flow Rate (Q) -->
+	<Row class="mb-4 items-end">
+		<Column sm={3} md={5} lg={5}>
+			<NumberInput label="Flow Rate (Q)" bind:value={flowRateValue} />
+		</Column>
+		<Column sm={1} md={3} lg={3}>
+			<Select bind:selected={flowRateUnit} labelText="Unit">
+				{#each flowRateUnits as flowRateUnit}
+					<SelectItem value={flowRateUnit.value} text={flowRateUnit.text} />
+				{/each}
+			</Select>
+		</Column>
+	</Row>
+
+	<!-- Viscosity (mu) -->
+	<Row class="mb-4 items-end">
+		<Column sm={3} md={5} lg={5}>
+			<NumberInput label="Dynamic Viscosity (μ)" bind:value={dynamicViscValue} />
+		</Column>
+		<Column sm={1} md={3} lg={3}>
+			<Select bind:selected={dynamicViscUnit} labelText="Unit">
+				{#each dynamicViscUnits as dynamicViscUnit}
+					<SelectItem value={dynamicViscUnit.value} text={dynamicViscUnit.text} />
+				{/each}
+			</Select>
+		</Column>
+	</Row>
+
+	<!-- Density (rho) -->
+	<Row class="mb-4 items-end">
+		<Column sm={3} md={5} lg={5}>
+			<NumberInput label="Density (ρ)" bind:value={densityValue} />
+		</Column>
+		<Column sm={1} md={3} lg={3}>
+			<Select bind:selected={densityUnit} labelText="Unit">
+				{#each densityUnits as densityUnit}
+					<SelectItem value={densityUnit.value} text={densityUnit.text} />
+				{/each}
+			</Select>
+		</Column>
+	</Row>
+
+	<Row class="mt-4">
+		<Column>
+			<Button on:click={calculatePressureDrop}>Calculate</Button>
+		</Column>
+	</Row>
+
+	{#if reynoldsNumber > 0}
+		<Row class="mt-8">
+			<Column>
+				<Tile>
+					<h4>Result:</h4>
+					<p>Reynold number: {reynoldsNumber.toFixed(3)}</p>
+					<p>Flow type: <strong>{reynoldsNumber > 4000 ? 'Turbulent' : 'Laminar'}</strong></p>
+				</Tile>
+			</Column>
+		</Row>
+	{/if}
+</Grid>
+
+<style>
+	:global(.landing-page__heading) {
+		font-size: 2rem;
+		font-weight: 400;
+		margin-bottom: 2rem;
+	}
+	:global(.items-end) {
+		align-items: flex-end;
+	}
+	:global(.mb-4) {
+		margin-bottom: 1rem;
+	}
+	:global(.mt-4) {
+		margin-top: 1rem;
+	}
+	:global(.mt-8) {
+		margin-top: 2rem;
+	}
+</style>
