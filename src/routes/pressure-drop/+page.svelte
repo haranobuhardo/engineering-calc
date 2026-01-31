@@ -101,8 +101,6 @@
 		let velocity: number = calcVelocity(insideDiameter, convertedFlowRate); // in m/s
 		let relativeRoughness: number = calcRelRoughness(convertedAbsRoughness, insideDiameter);
 
-		console.log(convertedFlowRate);
-
 		reynoldsNumber = calcReynoldsNumber(
 			insideDiameter / 1000,
 			convertedDensity,
