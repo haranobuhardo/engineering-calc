@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { siteConfig } from '$lib/nav';
-	import { convertLength, convertFlowRate, convertViscosity, convertDensity } from './convert';
+	import { convertLength, convertFlowRate, convertViscosity, convertDensity } from '$lib/convert';
 	import {
 		Grid,
 		Row,
@@ -100,6 +100,8 @@
 		let insideDiameter: number = calcID(convertedOD, convertedThickness); // in mm
 		let velocity: number = calcVelocity(insideDiameter, convertedFlowRate); // in m/s
 		let relativeRoughness: number = calcRelRoughness(convertedAbsRoughness, insideDiameter);
+
+		console.log(convertedFlowRate);
 
 		reynoldsNumber = calcReynoldsNumber(
 			insideDiameter / 1000,
