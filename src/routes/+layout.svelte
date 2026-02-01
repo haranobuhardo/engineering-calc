@@ -19,8 +19,8 @@
 	let { children } = $props();
 </script>
 
-<Header company="Hardo's" platformName="Calc" bind:isSideNavOpen>
-	<svelte:fragment slot="skip-to-content">
+<Header companyName="Hardo's" platformName="Calc" bind:isSideNavOpen>
+	<svelte:fragment slot="skipToContent">
 		<SkipToContent />
 	</svelte:fragment>
 </Header>
