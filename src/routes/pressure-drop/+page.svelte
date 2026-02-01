@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { siteConfig } from '$lib/nav';
 	import { convertLength, convertFlowRate, convertViscosity, convertDensity } from '$lib/convert';
+	import katex from 'katex';
 	import {
 		Grid,
 		Row,
@@ -34,6 +35,11 @@
 	let densityUnit = $state('kg/m3');
 
 	let reynoldsNumber = $state(0);
+
+	// LaTeX Calculation Steps (HTML strings)
+	let stepIDHtml = $state('');
+	let stepVelocityHtml = $state('');
+	let stepReHtml = $state('');
 
 	let lengthUnits: UnitOption[] = [
 		{ value: 'in', text: 'in' },
@@ -107,6 +113,19 @@
 			velocity,
 			convertedViscosity
 		);
+
+		// Generate LaTeX Steps
+		// 1. ID Step
+		let idLatex = `ID = OD - 2 \\times t = ${convertedOD.toFixed(2)} \\text{ mm} - 2 \\times ${convertedThickness.toFixed(2)} \\text{ mm} = ${insideDiameter.toFixed(2)} \\text{ mm}`;
+		stepIDHtml = katex.renderToString(idLatex, { displayMode: true });
+
+		// 2. Velocity Step
+		let velLatex = `v = \\frac{Q}{A} = \\frac{${(convertedFlowRate / 1000 / 60).toExponential(2)} \\text{ m}^3/\\text{s}}{\\frac{\\pi(ID)^2}{4}} = ${velocity.toFixed(2)} \\text{ m/s}`;
+		stepVelocityHtml = katex.renderToString(velLatex, { displayMode: true });
+
+		// 3. Reynolds Step
+		let reLatex = `Re = \\frac{\\rho v D}{\\mu} = \\frac{${convertedDensity.toFixed(2)} \\times ${velocity.toFixed(2)} \\times ${(insideDiameter / 1000).toFixed(4)}}{${convertedViscosity.toFixed(4)}} = ${reynoldsNumber.toFixed(0)}`;
+		stepReHtml = katex.renderToString(reLatex, { displayMode: true });
 	}
 </script>
 
@@ -229,6 +248,16 @@
 
 	{#if reynoldsNumber > 0}
 		<Row class="mt-8">
+			<Column>
+				<Tile>
+					<h4>Calculation Steps:</h4>
+					<div class="latex-step">{@html stepIDHtml}</div>
+					<div class="latex-step">{@html stepVelocityHtml}</div>
+					<div class="latex-step">{@html stepReHtml}</div>
+				</Tile>
+			</Column>
+		</Row>
+		<Row class="mt-4">
 			<Column>
 				<Tile>
 					<h4>Result:</h4>

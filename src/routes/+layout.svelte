@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import 'carbon-components-svelte/css/g10.css';
+	import 'katex/dist/katex.min.css';
 	import {
 		Header,
 		HeaderUtilities,

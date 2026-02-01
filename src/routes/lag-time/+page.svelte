@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { siteConfig } from '$lib/nav';
 	import { convertLength, convertFlowRate, convertVolume, convertPressure } from '$lib/convert';
+	import katex from 'katex';
 	import {
 		Grid,
 		Row,
@@ -43,6 +44,13 @@
 	let resultTime = $state(0);
 	let resultVelocity = $state(0);
 	let calculated = $state(false);
+
+	// LaTeX Calculation Steps (HTML strings)
+	let stepVolumeHtml = $state('');
+	let stepFlowHtml = $state('');
+	let stepZHtml = $state('');
+	let stepTimeHtml = $state('');
+	let stepVelocityHtml = $state('');
 
 	let lengthUnits = [
 		{ value: 'in', text: 'in' },
@@ -130,6 +138,36 @@
 		} else {
 			resultVelocity = 0;
 		}
+
+		// Generate LaTeX Steps
+		// 1. Volume Step
+		let volLatex = '';
+		if (mode === 'tube') {
+			let odMM = convertLength(odValue, odUnit);
+			let wallMM = convertLength(wallValue, wallUnit);
+			let idMM = odMM - 2 * wallMM;
+			let idCm = idMM / 10;
+			let lenMM = convertLength(lengthValue, lengthUnit);
+			let lenCm = lenMM / 10;
+			volLatex = `V = \\frac{\\pi \\times (ID_{cm})^2}{4} \\times L_{cm} = \\frac{\\pi \\times (${idCm.toFixed(3)})^2}{4} \\times ${lenCm.toFixed(1)} = ${volCC.toFixed(2)} \\text{ cc}`;
+		} else {
+			volLatex = `V = ${volumeValue} \\text{ ${volumeUnit}} = ${volCC.toFixed(2)} \\text{ cc}`;
+		}
+		stepVolumeHtml = katex.renderToString(volLatex, { displayMode: true });
+
+		// 2. Flow Step
+		let flowLatex = `Q = ${flowRateValue} \\text{ ${flowRateUnit}} = ${flowCC_S.toFixed(2)} \\text{ cc/s}`;
+		stepFlowHtml = katex.renderToString(flowLatex, { displayMode: true });
+
+		// 3. Z Step
+		let zLatex = `Z = \\frac{P_{in}}{P_{out}} = \\frac{${pInAbs.toFixed(2)}}{${pOutAbs.toFixed(2)}} = ${z.toFixed(4)}`;
+		stepZHtml = katex.renderToString(zLatex, { displayMode: true });
+
+		// 4. Time Step
+		let timeLatex = `t = \\frac{V}{Q} \\times Z \\times \\text{Lag} + t_{add}`;
+		timeLatex += ` = \\frac{${volCC.toFixed(2)}}{${flowCC_S.toFixed(2)}} \\times ${z.toFixed(4)} \\times ${lagOrder} + ${additionalTime}`;
+		timeLatex += ` = ${resultTime.toFixed(2)} \\text{ s}`;
+		stepTimeHtml = katex.renderToString(timeLatex, { displayMode: true });
 
 		calculated = true;
 	}
@@ -271,6 +309,17 @@
 
 	{#if calculated}
 		<Row class="mt-8">
+			<Column>
+				<Tile>
+					<h4>Calculation Steps:</h4>
+					<div class="latex-step">{@html stepVolumeHtml}</div>
+					<div class="latex-step">{@html stepFlowHtml}</div>
+					<div class="latex-step">{@html stepZHtml}</div>
+					<div class="latex-step">{@html stepTimeHtml}</div>
+				</Tile>
+			</Column>
+		</Row>
+		<Row class="mt-4">
 			<Column>
 				<Tile>
 					<h4>Result:</h4>

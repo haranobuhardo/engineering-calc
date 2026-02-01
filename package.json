@@ -30,6 +30,7 @@
 	},
 	"dependencies": {
 		"carbon-components-svelte": "^0.99.1",
-		"carbon-icons-svelte": "^13.8.0"
+		"carbon-icons-svelte": "^13.8.0",
+		"katex": "^0.16.28"
 	}
 }
