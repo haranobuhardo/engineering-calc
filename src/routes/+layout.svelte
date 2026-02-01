@@ -14,10 +14,31 @@
 	} from 'carbon-components-svelte';
 	import { calcLinks } from '$lib/nav';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+	import { pwaInfo } from 'virtual:pwa-info';
 
 	let isSideNavOpen = $state(false);
 	let { children } = $props();
+
+	onMount(async () => {
+		if (pwaInfo) {
+			const { registerSW } = await import('virtual:pwa-register');
+			registerSW({
+				immediate: true,
+				onRegistered(r) {
+					console.log('SW Registered: ' + r);
+				},
+				onRegisterError(error) {
+					console.log('SW registration error', error);
+				}
+			});
+		}
+	});
 </script>
+
+<svelte:head>
+	{@html pwaInfo?.webManifest.linkTag}
+</svelte:head>
 
 <Header companyName="Hardo's" platformName="Calc" bind:isSideNavOpen>
 	<svelte:fragment slot="skipToContent">
