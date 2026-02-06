@@ -9,6 +9,7 @@
 		SideNav,
 		SideNavItems,
 		SideNavLink,
+		SideNavDivider,
 		Content,
 		SkipToContent
 	} from 'carbon-components-svelte';
@@ -49,6 +50,7 @@
 <SideNav bind:isOpen={isSideNavOpen}>
 	<SideNavItems>
 		<SideNavLink href="/" text="Home" isSelected={$page.url.pathname === '/'} />
+		<SideNavDivider />
 		{#each calcLinks as calcLink (calcLink.id)}
 			<SideNavLink
 				href={calcLink.href}
