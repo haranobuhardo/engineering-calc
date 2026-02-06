@@ -9,7 +9,7 @@ export default defineConfig({
 		sveltekit(),
 		SvelteKitPWA({
 			registerType: 'autoUpdate',
-			includeAssets: ['favicon.png'],
+			includeAssets: ['favicon.svg'],
 			manifest: {
 				name: 'Engineering Calculator',
 				short_name: 'EngCalc',
