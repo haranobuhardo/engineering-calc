@@ -231,4 +231,8 @@
 	:global(.mt-8) {
 		margin-top: 2rem;
 	}
+
+	.latex-step{
+		overflow-x: auto;
+	}
 </style>
