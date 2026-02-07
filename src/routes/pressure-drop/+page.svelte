@@ -116,70 +116,70 @@
 	<!-- Input section -->
 	<!-- Outside Diameter (OD) -->
 	<Row class="mb-4 items-end">
-		<Column sm={3} md={5} lg={5}>
+		<Column sm={2} md={5} lg={5}>
 			<NumberInput labelText="Outside Diameter (OD)" bind:value={outsideDiameterValue} hideSteppers />
 		</Column>
-		<Column sm={1} md={3} lg={3}>
+		<Column sm={2} md={3} lg={3}>
 			<Dropdown bind:selectedId={outsideDiameterUnit} items={lengthUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<!-- Length (l) -->
 	<Row class="mb-4 items-end">
-		<Column sm={3} md={5} lg={5}>
+		<Column sm={2} md={5} lg={5}>
 			<NumberInput labelText="Length (l)" bind:value={lengthValue} hideSteppers />
 		</Column>
-		<Column sm={1} md={3} lg={3}>
+		<Column sm={2} md={3} lg={3}>
 			<Dropdown bind:selectedId={lengthUnit} items={lengthUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<!-- Wall Thickness (sch) -->
 	<Row class="mb-4 items-end">
-		<Column sm={3} md={5} lg={5}>
+		<Column sm={2} md={5} lg={5}>
 			<NumberInput labelText="Wall Thickness (t)" bind:value={wallThicknessValue} hideSteppers />
 		</Column>
-		<Column sm={1} md={3} lg={3}>
+		<Column sm={2} md={3} lg={3}>
 			<Dropdown bind:selectedId={wallThicknessUnit} items={lengthUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<!-- Absolute Roughness (k) -->
 	<Row class="mb-4 items-end">
-		<Column sm={3} md={5} lg={5}>
+		<Column sm={2} md={5} lg={5}>
 			<NumberInput labelText="Absolute Roughness (k)" bind:value={absRoughnessValue} hideSteppers />
 		</Column>
-		<Column sm={1} md={3} lg={3}>
+		<Column sm={2} md={3} lg={3}>
 			<Dropdown bind:selectedId={absRoughnessUnit} items={lengthUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<!-- Flow Rate (Q) -->
 	<Row class="mb-4 items-end">
-		<Column sm={3} md={5} lg={5}>
+		<Column sm={2} md={5} lg={5}>
 			<NumberInput labelText="Flow Rate (Q)" bind:value={flowRateValue} hideSteppers />
 		</Column>
-		<Column sm={1} md={3} lg={3}>
+		<Column sm={2} md={3} lg={3}>
 			<Dropdown bind:selectedId={flowRateUnit} items={flowRateUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<!-- Viscosity (mu) -->
 	<Row class="mb-4 items-end">
-		<Column sm={3} md={5} lg={5}>
+		<Column sm={2} md={5} lg={5}>
 			<NumberInput labelText="Dynamic Viscosity (μ)" bind:value={dynamicViscValue} hideSteppers />
 		</Column>
-		<Column sm={1} md={3} lg={3}>
+		<Column sm={2} md={3} lg={3}>
 			<Dropdown bind:selectedId={dynamicViscUnit} items={viscosityUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<!-- Density (rho) -->
 	<Row class="mb-4 items-end">
-		<Column sm={3} md={5} lg={5}>
+		<Column sm={2} md={5} lg={5}>
 			<NumberInput labelText="Density (ρ)" bind:value={densityValue} hideSteppers />
 		</Column>
-		<Column sm={1} md={3} lg={3}>
+		<Column sm={2} md={3} lg={3}>
 			<Dropdown bind:selectedId={densityUnit} items={densityUnits} label="Unit" />
 		</Column>
 	</Row>
@@ -193,7 +193,7 @@
 	{#if reynoldsNumber > 0}
 		<Row class="mt-8">
 			<Column>
-				<Tile>
+				<Tile class=''>
 					<h4>Calculation Steps:</h4>
 					<div class="latex-step">{@html stepIDHtml}</div>
 					<div class="latex-step">{@html stepVelocityHtml}</div>

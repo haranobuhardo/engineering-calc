@@ -132,12 +132,12 @@
 		stepFlowHtml = katex.renderToString(flowLatex, { displayMode: true });
 
 		// 3. Z Step
-		let zLatex = `Z = \\frac{P_{in}}{P_{out}} = \\frac{${pInAbs.toFixed(2)}}{${pOutAbs.toFixed(2)}} = ${z.toFixed(4)}`;
+		let zLatex = `Z = \\frac{P_{in}}{P_{out}} = \\frac{${pInAbs.toFixed(2)}}{${pOutAbs.toFixed(2)}} = ${z.toFixed(3)}`;
 		stepZHtml = katex.renderToString(zLatex, { displayMode: true });
 
 		// 4. Time Step
 		let timeLatex = `t = \\frac{V}{Q} \\times Z \\times \\text{Lag} + t_{add}`;
-		timeLatex += ` = \\frac{${volCC.toFixed(2)}}{${flowCC_S.toFixed(2)}} \\times ${z.toFixed(4)} \\times ${lagOrder} + ${additionalTime}`;
+		timeLatex += ` = \\frac{${volCC.toFixed(2)}}{${flowCC_S.toFixed(2)}} \\times ${z.toFixed(3)} \\times ${lagOrder} + ${additionalTime}`;
 		timeLatex += ` = ${resultTime.toFixed(2)} \\text{ s}`;
 		stepTimeHtml = katex.renderToString(timeLatex, { displayMode: true });
 
@@ -170,36 +170,36 @@
 	{#if mode === 'tube'}
 		<!-- Tube Inputs -->
 		<Row class="mb-4 items-end">
-			<Column sm={3} md={5} lg={5}>
+			<Column sm={2} md={5} lg={5}>
 				<NumberInput labelText="Outside Diameter (OD)" bind:value={odValue} hideSteppers />
 			</Column>
-			<Column sm={1} md={3} lg={3}>
+			<Column sm={2} md={3} lg={3}>
 <Dropdown bind:selectedId={odUnit} items={lengthUnits} label="Unit" />
 			</Column>
 		</Row>
 		<Row class="mb-4 items-end">
-			<Column sm={3} md={5} lg={5}>
+			<Column sm={2} md={5} lg={5}>
 				<NumberInput labelText="Wall Thickness (t)" bind:value={wallValue} hideSteppers />
 			</Column>
-			<Column sm={1} md={3} lg={3}>
+			<Column sm={2} md={3} lg={3}>
 <Dropdown bind:selectedId={wallUnit} items={lengthUnits} label="Unit" />
 			</Column>
 		</Row>
 		<Row class="mb-4 items-end">
-			<Column sm={3} md={5} lg={5}>
+			<Column sm={2} md={5} lg={5}>
 				<NumberInput labelText="Length (L)" bind:value={lengthValue} hideSteppers />
 			</Column>
-			<Column sm={1} md={3} lg={3}>
+			<Column sm={2} md={3} lg={3}>
 <Dropdown bind:selectedId={lengthUnit} items={lengthUnits} label="Unit" />
 			</Column>
 		</Row>
 	{:else}
 		<!-- Chamber Inputs -->
 		<Row class="mb-4 items-end">
-			<Column sm={3} md={5} lg={5}>
+			<Column sm={2} md={5} lg={5}>
 				<NumberInput labelText="Known Volume (V)" bind:value={volumeValue} hideSteppers />
 			</Column>
-			<Column sm={1} md={3} lg={3}>
+			<Column sm={2} md={3} lg={3}>
 <Dropdown bind:selectedId={volumeUnit} items={volumeUnits} label="Unit" />
 			</Column>
 		</Row>
@@ -207,41 +207,41 @@
 
 	<!-- Common Inputs -->
 	<Row class="mb-4 items-end">
-		<Column sm={3} md={5} lg={5}>
+		<Column sm={2} md={5} lg={5}>
 			<NumberInput labelText="Flow Rate (Q)" bind:value={flowRateValue} hideSteppers />
 		</Column>
-		<Column sm={1} md={3} lg={3}>
+		<Column sm={2} md={3} lg={3}>
 <Dropdown bind:selectedId={flowRateUnit} items={flowRateUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<Row class="mb-4 items-end">
-		<Column sm={3} md={5} lg={5}>
+		<Column sm={2} md={5} lg={5}>
 			<NumberInput labelText="Pressure (Flowing) (Pin)" bind:value={pressureInValue} hideSteppers />
 		</Column>
-		<Column sm={1} md={3} lg={3}>
+		<Column sm={2} md={3} lg={3}>
 <Dropdown bind:selectedId={pressureInUnit} items={pressureUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<Row class="mb-4 items-end">
-		<Column sm={3} md={5} lg={5}>
+		<Column sm={2} md={5} lg={5}>
 			<NumberInput labelText="Pressure (Outlet) (Pout)" bind:value={pressureOutValue} hideSteppers />
 		</Column>
-		<Column sm={1} md={3} lg={3}>
+		<Column sm={2} md={3} lg={3}>
 <Dropdown bind:selectedId={pressureOutUnit} items={pressureUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<Row class="mb-4 items-end">
-		<Column sm={3} md={5} lg={5}>
+		<Column sm={4} md={5} lg={5}>
 			<NumberInput labelText="First Order Lag (Lag)" bind:value={lagOrder} hideSteppers />
 		</Column>
 	</Row>
 
 	<Row class="mb-4 items-end">
-		<Column sm={3} md={5} lg={5}>
-			<NumberInput labelText="Additional Time (t_add)" bind:value={additionalTime} hideSteppers />
+		<Column sm={4} md={5} lg={5}>
+			<NumberInput labelText="Additional Time (t_add) in sec" bind:value={additionalTime} hideSteppers />
 		</Column>
 	</Row>
 
