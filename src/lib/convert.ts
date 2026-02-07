@@ -85,3 +85,44 @@ export function convertPressure(pressure: number, unit: string): number {
             return pressure;
     }
 }
+
+export const lengthUnits = [
+    { id: 'in', text: 'in' },
+    { id: 'ft', text: 'ft' },
+    { id: 'mm', text: 'mm' },
+    { id: 'm', text: 'm' }
+];
+
+export const volumeUnits = [
+    { id: 'cc', text: 'cc' },
+    { id: 'ml', text: 'ml' },
+    { id: 'L', text: 'L' },
+    { id: 'm3', text: 'm3' },
+    { id: 'in3', text: 'in3' },
+    { id: 'ft3', text: 'ft3' },
+    { id: 'cm3', text: 'cm3' },
+    { id: "liter", text: "liter" }
+];
+
+export const flowRateUnits = [
+    { id: 'lpm', text: 'NLPM' },
+    { id: 'lph', text: 'NLPH' },
+    { id: 'bpd', text: 'BPD' }
+];
+
+export const pressureUnits = [
+    { id: 'psia', text: 'psia' },
+    { id: 'psig', text: 'psig' },
+    { id: 'bar', text: 'bar' },
+    { id: 'atm', text: 'atm' }
+];
+
+export const viscosityUnits = [
+    { id: 'cps', text: 'cP' },
+    { id: 'kg/m-s', text: 'kg/m-s' }
+];
+
+export const densityUnits = [
+    { id: 'lbs/ft3', text: 'lbs/ft3' },
+    { id: 'kg/m3', text: 'kg/m3' }
+];

@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { siteConfig } from '$lib/nav';
-	import { convertLength, convertFlowRate, convertVolume, convertPressure } from '$lib/convert';
+	import { convertLength, convertFlowRate, convertVolume, convertPressure, lengthUnits, volumeUnits, flowRateUnits, pressureUnits } from '$lib/convert';
 	import katex from 'katex';
 	import {
 		Grid,
 		Row,
 		Column,
 		NumberInput,
-		Select,
-		SelectItem,
+		Dropdown,
 		Button,
 		Tile,
 		RadioButtonGroup,
@@ -52,34 +51,7 @@
 	let stepTimeHtml = $state('');
 	let stepVelocityHtml = $state('');
 
-	let lengthUnits = [
-		{ value: 'in', text: 'in' },
-		{ value: 'ft', text: 'ft' },
-		{ value: 'mm', text: 'mm' },
-		{ value: 'm', text: 'm' }
-	];
 
-	let volumeUnits = [
-		{ value: 'cc', text: 'cc' },
-		{ value: 'ml', text: 'ml' },
-		{ value: 'L', text: 'L' },
-		{ value: 'm3', text: 'm3' },
-		{ value: 'in3', text: 'in3' },
-		{ value: 'ft3', text: 'ft3' }
-	];
-
-	let flowRateUnits = [
-		{ value: 'lpm', text: 'NLPM' },
-		{ value: 'lph', text: 'NLPH' },
-		{ value: 'bpd', text: 'BPD' }
-	];
-
-	let pressureUnits = [
-		{ value: 'psia', text: 'psia' },
-		{ value: 'psig', text: 'psig' },
-		{ value: 'bar', text: 'bar' },
-		{ value: 'atm', text: 'atm' }
-	];
 
 	function calculateLagTime() {
 		// 1. Calculate Volume in cc
@@ -199,52 +171,36 @@
 		<!-- Tube Inputs -->
 		<Row class="mb-4 items-end">
 			<Column sm={3} md={5} lg={5}>
-				<NumberInput labelText="Outside Diameter (OD)" bind:value={odValue} />
+				<NumberInput labelText="Outside Diameter (OD)" bind:value={odValue} hideSteppers />
 			</Column>
 			<Column sm={1} md={3} lg={3}>
-				<Select bind:selected={odUnit} labelText="Unit">
-					{#each lengthUnits as unit}
-						<SelectItem value={unit.value} text={unit.text} />
-					{/each}
-				</Select>
+<Dropdown bind:selectedId={odUnit} items={lengthUnits} label="Unit" />
 			</Column>
 		</Row>
 		<Row class="mb-4 items-end">
 			<Column sm={3} md={5} lg={5}>
-				<NumberInput labelText="Wall Thickness (t)" bind:value={wallValue} />
+				<NumberInput labelText="Wall Thickness (t)" bind:value={wallValue} hideSteppers />
 			</Column>
 			<Column sm={1} md={3} lg={3}>
-				<Select bind:selected={wallUnit} labelText="Unit">
-					{#each lengthUnits as unit}
-						<SelectItem value={unit.value} text={unit.text} />
-					{/each}
-				</Select>
+<Dropdown bind:selectedId={wallUnit} items={lengthUnits} label="Unit" />
 			</Column>
 		</Row>
 		<Row class="mb-4 items-end">
 			<Column sm={3} md={5} lg={5}>
-				<NumberInput labelText="Length (L)" bind:value={lengthValue} />
+				<NumberInput labelText="Length (L)" bind:value={lengthValue} hideSteppers />
 			</Column>
 			<Column sm={1} md={3} lg={3}>
-				<Select bind:selected={lengthUnit} labelText="Unit">
-					{#each lengthUnits as unit}
-						<SelectItem value={unit.value} text={unit.text} />
-					{/each}
-				</Select>
+<Dropdown bind:selectedId={lengthUnit} items={lengthUnits} label="Unit" />
 			</Column>
 		</Row>
 	{:else}
 		<!-- Chamber Inputs -->
 		<Row class="mb-4 items-end">
 			<Column sm={3} md={5} lg={5}>
-				<NumberInput labelText="Known Volume (V)" bind:value={volumeValue} />
+				<NumberInput labelText="Known Volume (V)" bind:value={volumeValue} hideSteppers />
 			</Column>
 			<Column sm={1} md={3} lg={3}>
-				<Select bind:selected={volumeUnit} labelText="Unit">
-					{#each volumeUnits as unit}
-						<SelectItem value={unit.value} text={unit.text} />
-					{/each}
-				</Select>
+<Dropdown bind:selectedId={volumeUnit} items={volumeUnits} label="Unit" />
 			</Column>
 		</Row>
 	{/if}
@@ -252,52 +208,40 @@
 	<!-- Common Inputs -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput labelText="Flow Rate (Q)" bind:value={flowRateValue} />
+			<NumberInput labelText="Flow Rate (Q)" bind:value={flowRateValue} hideSteppers />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
-			<Select bind:selected={flowRateUnit} labelText="Unit">
-				{#each flowRateUnits as unit}
-					<SelectItem value={unit.value} text={unit.text} />
-				{/each}
-			</Select>
+<Dropdown bind:selectedId={flowRateUnit} items={flowRateUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput labelText="Pressure (Flowing) (Pin)" bind:value={pressureInValue} />
+			<NumberInput labelText="Pressure (Flowing) (Pin)" bind:value={pressureInValue} hideSteppers />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
-			<Select bind:selected={pressureInUnit} labelText="Unit">
-				{#each pressureUnits as unit}
-					<SelectItem value={unit.value} text={unit.text} />
-				{/each}
-			</Select>
+<Dropdown bind:selectedId={pressureInUnit} items={pressureUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput labelText="Pressure (Outlet) (Pout)" bind:value={pressureOutValue} />
+			<NumberInput labelText="Pressure (Outlet) (Pout)" bind:value={pressureOutValue} hideSteppers />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
-			<Select bind:selected={pressureOutUnit} labelText="Unit">
-				{#each pressureUnits as unit}
-					<SelectItem value={unit.value} text={unit.text} />
-				{/each}
-			</Select>
+<Dropdown bind:selectedId={pressureOutUnit} items={pressureUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput labelText="First Order Lag (Lag)" bind:value={lagOrder} />
+			<NumberInput labelText="First Order Lag (Lag)" bind:value={lagOrder} hideSteppers />
 		</Column>
 	</Row>
 
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput labelText="Additional Time (t_add)" bind:value={additionalTime} />
+			<NumberInput labelText="Additional Time (t_add)" bind:value={additionalTime} hideSteppers />
 		</Column>
 	</Row>
 

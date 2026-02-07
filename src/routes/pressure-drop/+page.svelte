@@ -1,23 +1,16 @@
 <script lang="ts">
 	import { siteConfig } from '$lib/nav';
-	import { convertLength, convertFlowRate, convertViscosity, convertDensity } from '$lib/convert';
+	import { convertLength, convertFlowRate, convertViscosity, convertDensity, lengthUnits, flowRateUnits, viscosityUnits, densityUnits } from '$lib/convert';
 	import katex from 'katex';
 	import {
 		Grid,
 		Row,
 		Column,
 		NumberInput,
-		Select,
-		SelectItem,
+		Dropdown,
 		Button,
 		Tile
 	} from 'carbon-components-svelte';
-
-	interface UnitOption {
-		value: string;
-		text: string;
-		scale?: number;
-	}
 
 	let outsideDiameterValue = $state(0.25);
 	let outsideDiameterUnit = $state('in');
@@ -41,28 +34,7 @@
 	let stepVelocityHtml = $state('');
 	let stepReHtml = $state('');
 
-	let lengthUnits: UnitOption[] = [
-		{ value: 'in', text: 'in' },
-		{ value: 'ft', text: 'ft' },
-		{ value: 'mm', text: 'mm' },
-		{ value: 'm', text: 'm' }
-	];
 
-	let flowRateUnits: UnitOption[] = [
-		{ value: 'lpm', text: 'lpm' },
-		{ value: 'lph', text: 'lph' },
-		{ value: 'bpd', text: 'bpd' }
-	];
-
-	let dynamicViscUnits: UnitOption[] = [
-		{ value: 'cps', text: 'cP' },
-		{ value: 'kg/m-s', text: 'kg/m-s' }
-	];
-
-	let densityUnits: UnitOption[] = [
-		{ value: 'lbs/ft3', text: 'lbs/ft3' },
-		{ value: 'kg/m3', text: 'kg/m3' }
-	];
 
 	function calcID(outsideDiameter: number, wallThickness: number): number {
 		return outsideDiameter - 2 * wallThickness;
@@ -145,98 +117,70 @@
 	<!-- Outside Diameter (OD) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput labelText="Outside Diameter (OD)" bind:value={outsideDiameterValue} />
+			<NumberInput labelText="Outside Diameter (OD)" bind:value={outsideDiameterValue} hideSteppers />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
-			<Select bind:selected={outsideDiameterUnit} labelText="Unit">
-				{#each lengthUnits as lengthUnit}
-					<SelectItem value={lengthUnit.value} text={lengthUnit.text} />
-				{/each}
-			</Select>
+			<Dropdown bind:selectedId={outsideDiameterUnit} items={lengthUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<!-- Length (l) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput labelText="Length (l)" bind:value={lengthValue} />
+			<NumberInput labelText="Length (l)" bind:value={lengthValue} hideSteppers />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
-			<Select bind:selected={lengthUnit} labelText="Unit">
-				{#each lengthUnits as lengthUnit}
-					<SelectItem value={lengthUnit.value} text={lengthUnit.text} />
-				{/each}
-			</Select>
+			<Dropdown bind:selectedId={lengthUnit} items={lengthUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<!-- Wall Thickness (sch) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput labelText="Wall Thickness (t)" bind:value={wallThicknessValue} />
+			<NumberInput labelText="Wall Thickness (t)" bind:value={wallThicknessValue} hideSteppers />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
-			<Select bind:selected={wallThicknessUnit} labelText="Unit">
-				{#each lengthUnits as lengthUnit}
-					<SelectItem value={lengthUnit.value} text={lengthUnit.text} />
-				{/each}
-			</Select>
+			<Dropdown bind:selectedId={wallThicknessUnit} items={lengthUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<!-- Absolute Roughness (k) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput labelText="Absolute Roughness (k)" bind:value={absRoughnessValue} />
+			<NumberInput labelText="Absolute Roughness (k)" bind:value={absRoughnessValue} hideSteppers />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
-			<Select bind:selected={absRoughnessUnit} labelText="Unit">
-				{#each lengthUnits as lengthUnit}
-					<SelectItem value={lengthUnit.value} text={lengthUnit.text} />
-				{/each}
-			</Select>
+			<Dropdown bind:selectedId={absRoughnessUnit} items={lengthUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<!-- Flow Rate (Q) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput labelText="Flow Rate (Q)" bind:value={flowRateValue} />
+			<NumberInput labelText="Flow Rate (Q)" bind:value={flowRateValue} hideSteppers />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
-			<Select bind:selected={flowRateUnit} labelText="Unit">
-				{#each flowRateUnits as flowRateUnit}
-					<SelectItem value={flowRateUnit.value} text={flowRateUnit.text} />
-				{/each}
-			</Select>
+			<Dropdown bind:selectedId={flowRateUnit} items={flowRateUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<!-- Viscosity (mu) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput labelText="Dynamic Viscosity (μ)" bind:value={dynamicViscValue} />
+			<NumberInput labelText="Dynamic Viscosity (μ)" bind:value={dynamicViscValue} hideSteppers />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
-			<Select bind:selected={dynamicViscUnit} labelText="Unit">
-				{#each dynamicViscUnits as dynamicViscUnit}
-					<SelectItem value={dynamicViscUnit.value} text={dynamicViscUnit.text} />
-				{/each}
-			</Select>
+			<Dropdown bind:selectedId={dynamicViscUnit} items={viscosityUnits} label="Unit" />
 		</Column>
 	</Row>
 
 	<!-- Density (rho) -->
 	<Row class="mb-4 items-end">
 		<Column sm={3} md={5} lg={5}>
-			<NumberInput labelText="Density (ρ)" bind:value={densityValue} />
+			<NumberInput labelText="Density (ρ)" bind:value={densityValue} hideSteppers />
 		</Column>
 		<Column sm={1} md={3} lg={3}>
-			<Select bind:selected={densityUnit} labelText="Unit">
-				{#each densityUnits as densityUnit}
-					<SelectItem value={densityUnit.value} text={densityUnit.text} />
-				{/each}
-			</Select>
+			<Dropdown bind:selectedId={densityUnit} items={densityUnits} label="Unit" />
 		</Column>
 	</Row>
 
