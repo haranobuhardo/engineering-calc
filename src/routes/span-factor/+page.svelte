@@ -14,19 +14,21 @@
 
 	let measuredValue = $state(100);
 	let trueValue = $state(100);
-	let result = $state<number | null>(null);
+	let result_error = $state<number | null>(null);
+	let result_span = $state<number | null>(null);
 	let stepLatex = $state('');
 
 	function calculate() {
 		if (trueValue === 0) {
-			result = 0; // Avoid division by zero
+			result_error = 0; // Avoid division by zero
 			stepLatex = 'Error: True value cannot be 0';
 			return;
 		}
 		// Formula: abs(measured - true) / true * 100
-		result = (Math.abs(measuredValue - trueValue) / trueValue) * 100;
+		result_error = (Math.abs(measuredValue - trueValue) / trueValue) * 100;
+		result_span = (trueValue / measuredValue);
 
-		let latex = `\\text{Error} \\% = \\left| \\frac{\\text{Measured} - \\text{True}}{\\text{True}} \\right| \\times 100 \\\\ = \\left| \\frac{${measuredValue} - ${trueValue}}{${trueValue}} \\right| \\times 100 = ${result.toFixed(4)} \\%`;
+		let latex = `\\text{Error} \\% = \\left| \\frac{\\text{Measured} - \\text{True}}{\\text{True}} \\right| \\times 100 \\\\ = \\left| \\frac{${measuredValue} - ${trueValue}}{${trueValue}} \\right| \\times 100 = ${result_error.toFixed(4)} \\%`;
 		stepLatex = katex.renderToString(latex, { displayMode: true });
 	}
 </script>
@@ -52,13 +54,13 @@
 		</Column>
 	</Row>
 
-	<Row class="mt-4">
+	<Row class="mt-4 mb-4">
 		<Column>
 			<Button on:click={calculate}>Calculate Error %</Button>
 		</Column>
 	</Row>
 
-	{#if result !== null}
+	{#if result_error !== null && result_span !== null}
 		<Row class="mt-8">
 			<Column>
 				<Tile>
@@ -72,7 +74,8 @@
 				<Tile>
 					<h4>Result:</h4>
 					<p class="result-text">
-						Error: {result.toFixed(4)} %
+						Error: {result_error.toFixed(4)} % <br>
+						Span Factor: {result_span.toFixed(4)}
 					</p>
 				</Tile>
 			</Column>
