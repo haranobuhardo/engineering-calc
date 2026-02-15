@@ -52,14 +52,14 @@
 		const p_h2o_mmhg = p_atm * fraction * 760;
 
 		if (p_h2o_mmhg <= 0) {
-			result = null; 
+			result = null;
 			stepLatex = 'Error: Water partial pressure is 0 or negative';
 			return;
 		}
 
 		// Formula: WDP (K) = 5038.13 / (20.1424 - ln(P_H2O_mmHg))
 		const wdp_kelvin = 5038.13 / (20.1424 - Math.log(p_h2o_mmhg));
-		
+
 		// Convert to Celcius
 		result = wdp_kelvin - 273.15;
 
@@ -87,7 +87,7 @@
 
 	<Row class="mb-4 items-end">
 		<Column sm={2} md={5} lg={5}>
-			<NumberInput labelText="System Pressure" bind:value={pressure} />
+			<NumberInput labelText="System Pressure" bind:value={pressure} hideSteppers/>
 		</Column>
 		<Column sm={2} md={3} lg={3}>
 			<Dropdown bind:selectedId={pressureUnit} items={pressureUnitsItems} />
@@ -96,7 +96,7 @@
 
 	<Row class="mb-4 items-end">
 		<Column sm={2} md={5} lg={5}>
-			<NumberInput labelText="Water Content" bind:value={waterContent} />
+			<NumberInput labelText="Water Content" bind:value={waterContent} hideSteppers/>
 		</Column>
 		<Column sm={2} md={3} lg={3}>
 			<Dropdown bind:selectedId={waterContentUnit} items={waterUnitsItems} />
@@ -110,7 +110,7 @@
 	</Row>
 
 	{#if result !== null}
-		<Row class="mt-8">
+		<Row class="mt-4">
 			<Column>
 				<Tile>
 					<h4>Calculation Steps:</h4>
@@ -149,5 +149,9 @@
 	.result-text {
 		font-size: 1.5rem;
 		font-weight: 600;
+	}
+
+	.latex-step{
+		overflow-x: auto;
 	}
 </style>

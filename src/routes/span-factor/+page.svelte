@@ -12,10 +12,11 @@
 	import katex from 'katex';
 	import 'katex/dist/katex.min.css';
 
-	let measuredValue = $state(100);
-	let trueValue = $state(100);
+	let measuredValue = $state(100.0);
+	let trueValue = $state(100.0);
 	let result_error = $state<number | null>(null);
 	let result_span = $state<number | null>(null);
+	let initialSpanFactor = $state<number | null>(1.00);
 	let stepLatex = $state('');
 
 	function calculate() {
@@ -26,7 +27,7 @@
 		}
 		// Formula: abs(measured - true) / true * 100
 		result_error = (Math.abs(measuredValue - trueValue) / trueValue) * 100;
-		result_span = (trueValue / measuredValue);
+		result_span = (trueValue / measuredValue) * initialSpanFactor;
 
 		let latex = `\\text{Error} \\% = \\left| \\frac{\\text{Measured} - \\text{True}}{\\text{True}} \\right| \\times 100 \\\\ = \\left| \\frac{${measuredValue} - ${trueValue}}{${trueValue}} \\right| \\times 100 = ${result_error.toFixed(4)} \\%`;
 		stepLatex = katex.renderToString(latex, { displayMode: true });
@@ -46,11 +47,14 @@
 	</Row>
 
 	<Row class="mb-4">
-		<Column sm={2} md={4} lg={4}>
-			<NumberInput labelText="Measured Value" bind:value={measuredValue} />
+		<Column sm={4} md={4} lg={4}>
+			<NumberInput labelText="True / Reference Value" bind:value={trueValue} hideSteppers/>
 		</Column>
-		<Column sm={2} md={4} lg={4}>
-			<NumberInput labelText="True / Reference Value" bind:value={trueValue} />
+		<Column sm={4} md={4} lg={4}>
+			<NumberInput labelText="Current Measured Value" bind:value={measuredValue} hideSteppers/>
+		</Column>
+		<Column sm={4} md={4} lg={4}>
+			<NumberInput labelText="Initial Span Factor" bind:value={initialSpanFactor} hideSteppers/>
 		</Column>
 	</Row>
 
@@ -61,7 +65,7 @@
 	</Row>
 
 	{#if result_error !== null && result_span !== null}
-		<Row class="mt-8">
+		<Row class="mt-4">
 			<Column>
 				<Tile>
 					<h4>Calculation Step:</h4>
@@ -75,7 +79,7 @@
 					<h4>Result:</h4>
 					<p class="result-text">
 						Error: {result_error.toFixed(4)} % <br>
-						Span Factor: {result_span.toFixed(4)}
+						New Span Factor: {result_span.toFixed(4)}
 					</p>
 				</Tile>
 			</Column>
@@ -96,7 +100,7 @@
 		margin-top: 1rem;
 	}
 	.result-text {
-		font-size: 1.5rem;
+		font-size: 1.2rem;
 		font-weight: 600;
 	}
 </style>

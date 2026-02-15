@@ -68,19 +68,20 @@
 	</Row>
 
 	<Row class="mb-4">
-		<Column sm={2} md={4} lg={4}>
-			<NumberInput labelText="Min Range" bind:value={minRange} />
+		<Column sm={4} md={4} lg={4}>
+			<NumberInput labelText="Min Range" bind:value={minRange} hideSteppers/>
 		</Column>
-		<Column sm={2} md={4} lg={4}>
-			<NumberInput labelText="Max Range" bind:value={maxRange} />
+		<Column sm={4} md={4} lg={4}>
+			<NumberInput labelText="Max Range" bind:value={maxRange} hideSteppers/>
 		</Column>
 	</Row>
 
 	<Row class="mb-4">
-		<Column sm={2} md={4} lg={4}>
-			<NumberInput 
-				labelText={mode === 'ma-to-pv' ? "Input Signal (mA)" : "Input Process Value"} 
-				bind:value={inputValue} 
+		<Column sm={4} md={4} lg={4}>
+			<NumberInput
+				labelText={mode === 'ma-to-pv' ? "Input Signal (mA)" : "Input Process Value"}
+				bind:value={inputValue}
+				hideSteppers
 			/>
 		</Column>
 	</Row>
@@ -92,7 +93,7 @@
 	</Row>
 
 	{#if result !== null}
-		<Row class="mt-8">
+		<Row class="mt-4">
 			<Column>
 				<Tile>
 					<h4>Calculation Step:</h4>
@@ -105,7 +106,7 @@
 				<Tile>
 					<h4>Result:</h4>
 					<p class="result-text">
-						{result.toFixed(3)} 
+						{result.toFixed(3)}
 						{mode === 'ma-to-pv' ? '(Process Value)' : 'mA'}
 					</p>
 				</Tile>

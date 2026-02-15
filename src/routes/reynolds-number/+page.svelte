@@ -191,7 +191,7 @@
 	</Row>
 
 	{#if reynoldsNumber > 0}
-		<Row class="mt-8">
+		<Row class="mt-4">
 			<Column>
 				<Tile class=''>
 					<h4>Calculation Steps:</h4>

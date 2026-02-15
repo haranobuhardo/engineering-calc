@@ -252,7 +252,7 @@
 	</Row>
 
 	{#if calculated}
-		<Row class="mt-8">
+		<Row class="mt-4">
 			<Column>
 				<Tile>
 					<h4>Calculation Steps:</h4>
