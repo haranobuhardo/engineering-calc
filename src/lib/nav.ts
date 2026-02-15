@@ -10,8 +10,11 @@ export interface SiteConfig {
 }
 
 export const calcLinks: CalcLink[] = [
+	{ href: '/reynolds-number', label: 'Reynolds Number', id: 'reynolds-number' },
 	{ href: '/lag-time', label: 'Lag Time', id: 'lag-time' },
-	{ href: '/pressure-drop', label: 'Pressure Drop', id: 'pressure-drop' }
+	{ href: '/analog-signal', label: 'Analog Converter', id: 'analog-signal' },
+	{ href: '/span-factor', label: 'Span Factor', id: 'span-factor' },
+	{ href: '/water-dew-point', label: 'Water Dew Point', id: 'water-dew-point' }
 ];
 
 export const siteConfig: SiteConfig = {

@@ -17,7 +17,7 @@
 	</Row>
 	<Row>
 		{#each calcLinks as calcLink (calcLink.id)}
-			<Column sm={4} md={4} lg={4}>
+			<Column sm={4} md={4} lg={4} class="mb-4">
 				<ClickableTile href={calcLink.href}>
 					{calcLink.label}
 				</ClickableTile>

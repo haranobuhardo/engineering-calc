@@ -102,14 +102,14 @@
 </script>
 
 <svelte:head>
-	<title>{siteConfig.title} - Pressure Drop</title>
+	<title>{siteConfig.title} - Reynolds Number</title>
 	<meta name={siteConfig.description} content={siteConfig.description} />
 </svelte:head>
 
 <Grid>
 	<Row>
 		<Column>
-			<h1 class="landing-page__heading">Pressure Drop Calculator</h1>
+			<h1 class="landing-page__heading">Reynolds Number Calculator</h1>
 		</Column>
 	</Row>
 
