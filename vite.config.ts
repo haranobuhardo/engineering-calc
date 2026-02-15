@@ -22,6 +22,12 @@ export default defineConfig({
 						type: 'image/svg+xml'
 					}
 				]
+			},
+			workbox: {
+				// Cache all prerendered pages and static assets
+				globPatterns: ['**/*.{js,css,html,svg,png,ico,woff,woff2}'],
+				// Handle navigation requests offline
+				navigateFallback: '/',
 			}
 		})
 	]
