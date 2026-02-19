@@ -154,8 +154,4 @@
 	.latex-step{
 		overflow-x: auto;
 	}
-
-	.katex-display > .katex { white-space: normal }
-    /* Add space between broken lines: */
-    .katex-display > .base { margin: 1em 0 }
 </style>
