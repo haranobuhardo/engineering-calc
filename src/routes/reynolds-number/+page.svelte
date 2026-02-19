@@ -30,11 +30,7 @@
 	let reynoldsNumber = $state(0);
 
 	// LaTeX Calculation Steps (HTML strings)
-	let stepIDHtml = $state('');
-	let stepVelocityHtml = $state('');
-	let stepReHtml = $state('');
-
-
+	let stepLatex = $state('');
 
 	function calcID(outsideDiameter: number, wallThickness: number): number {
 		return outsideDiameter - 2 * wallThickness;
@@ -43,6 +39,7 @@
 	function calcVelocity(insideDiameter: number, flowRate: number): number {
 		// insideDiameter: mm
 		// flowRate: LPM (liter per minute)
+		// area uses diameter in meters
 		let area = (1 / 4) * 3.14 * (insideDiameter / 1000) ** 2; // m**2
 		let flowRateConv = flowRate / 1000 / 60; // m**3/second
 		return flowRateConv / area; // in m/s
@@ -51,6 +48,8 @@
 	function calcRelRoughness(absRoughness: number, insideDiameter: number): number {
 		// absRoughness: meter (m)
 		// insideDiameter: meter (m)
+		// Wait, absRoughnessValue input is unit aware, convertedAbsRoughness depends on unit. 
+		// Usually roughness k is in mm or similar small unit.
 		return absRoughness / insideDiameter;
 	}
 
@@ -63,7 +62,8 @@
 		// insideDiameter: meter (m)
 		// density: kg/m3
 		// velocity: m/s
-		// viscosity: kg/(m.s)
+		// viscosity: kg/(m.s) = Pa.s = 1000 cP? 1 cP = 0.001 Pa.s
+		// Input dynamicViscValue is 'cps' by default. convertViscosity converts to kg/m/s (Pa.s).
 		return (insideDiameter * density * velocity) / viscosity;
 	}
 
@@ -77,8 +77,7 @@
 
 		let insideDiameter: number = calcID(convertedOD, convertedThickness); // in mm
 		let velocity: number = calcVelocity(insideDiameter, convertedFlowRate); // in m/s
-		let relativeRoughness: number = calcRelRoughness(convertedAbsRoughness, insideDiameter);
-
+		
 		reynoldsNumber = calcReynoldsNumber(
 			insideDiameter / 1000,
 			convertedDensity,
@@ -87,17 +86,13 @@
 		);
 
 		// Generate LaTeX Steps
-		// 1. ID Step
-		let idLatex = `ID = OD - 2 \\times t = ${convertedOD.toFixed(2)} \\text{ mm} - 2 \\times ${convertedThickness.toFixed(2)} \\text{ mm} = ${insideDiameter.toFixed(2)} \\text{ mm}`;
-		stepIDHtml = katex.renderToString(idLatex, { displayMode: true });
-
-		// 2. Velocity Step
-		let velLatex = `v = \\frac{Q}{A} = \\frac{${(convertedFlowRate / 1000 / 60).toExponential(2)} \\text{ m}^3/\\text{s}}{\\frac{\\pi(ID)^2}{4}} = ${velocity.toFixed(2)} \\text{ m/s}`;
-		stepVelocityHtml = katex.renderToString(velLatex, { displayMode: true });
-
-		// 3. Reynolds Step
-		let reLatex = `Re = \\frac{\\rho v D}{\\mu} = \\frac{${convertedDensity.toFixed(2)} \\times ${velocity.toFixed(2)} \\times ${(insideDiameter / 1000).toFixed(4)}}{${convertedViscosity.toFixed(4)}} = ${reynoldsNumber.toFixed(0)}`;
-		stepReHtml = katex.renderToString(reLatex, { displayMode: true });
+		let latex = `
+			ID = OD - 2 \\times t = ${convertedOD.toFixed(2)} \\text{ mm} - 2 \\times ${convertedThickness.toFixed(2)} \\text{ mm} = ${insideDiameter.toFixed(2)} \\text{ mm} \\\\[10pt]
+			v = \\frac{Q}{A} = \\frac{${(convertedFlowRate / 1000 / 60).toExponential(2)} \\text{ m}^3/\\text{s}}{\\frac{\\pi(ID/1000)^2}{4}} = ${velocity.toFixed(2)} \\text{ m/s} \\\\[10pt]
+			Re = \\frac{\\rho v D}{\\mu} = \\frac{${convertedDensity.toFixed(2)} \\times ${velocity.toFixed(2)} \\times ${(insideDiameter / 1000).toFixed(4)}}{${convertedViscosity.toFixed(4)}} = ${reynoldsNumber.toFixed(0)}
+		`;
+		
+		stepLatex = katex.renderToString(latex, { displayMode: true, fleqn: true });
 	}
 </script>
 
@@ -195,9 +190,7 @@
 			<Column>
 				<Tile class=''>
 					<h4>Calculation Steps:</h4>
-					<div class="latex-step">{@html stepIDHtml}</div>
-					<div class="latex-step">{@html stepVelocityHtml}</div>
-					<div class="latex-step">{@html stepReHtml}</div>
+					<div class="latex-step">{@html stepLatex}</div>
 				</Tile>
 			</Column>
 		</Row>

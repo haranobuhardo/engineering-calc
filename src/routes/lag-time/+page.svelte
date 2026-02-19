@@ -45,18 +45,13 @@
 	let calculated = $state(false);
 
 	// LaTeX Calculation Steps (HTML strings)
-	let stepVolumeHtml = $state('');
-	let stepFlowHtml = $state('');
-	let stepZHtml = $state('');
-	let stepTimeHtml = $state('');
-	let stepVelocityHtml = $state('');
-
-
+	let stepLatex = $state('');
 
 	function calculateLagTime() {
 		// 1. Calculate Volume in cc
 		let volCC = 0;
 		let lenM = 0;
+		let latex = '';
 
 		if (mode === 'tube') {
 			let odMM = convertLength(odValue, odUnit);
@@ -73,8 +68,11 @@
 			let areaCm2 = (Math.PI * Math.pow(idCm, 2)) / 4;
 			let lenCm = lenMM / 10;
 			volCC = areaCm2 * lenCm;
+
+			latex += `V = \\frac{\\pi \\times (ID_{cm})^2}{4} \\times L_{cm} = \\frac{\\pi \\times (${idCm.toFixed(3)})^2}{4} \\times ${lenCm.toFixed(1)} = ${volCC.toFixed(2)} \\text{ cc} \\\\[10pt]`;
 		} else {
 			volCC = convertVolume(volumeValue, volumeUnit);
+			latex += `V = ${volumeValue} \\text{ ${volumeUnit}} = ${volCC.toFixed(2)} \\text{ cc} \\\\[10pt]`;
 		}
 
 		resultVolume = volCC;
@@ -84,6 +82,8 @@
 		// 1 LPM = 1000 cc/min = 1000/60 cc/s
 		let flowLPM = convertFlowRate(flowRateValue, flowRateUnit);
 		let flowCC_S = (flowLPM * 1000) / 60;
+		
+		latex += `Q = ${flowRateValue} \\text{ ${flowRateUnit}} = ${flowCC_S.toFixed(2)} \\text{ cc/s} \\\\[10pt]`;
 
 		// 3. Compressibility Factor Z (Pressure Ratio)
 		// ratio of P_flowing / P_outlet (both absolute)
@@ -91,9 +91,15 @@
 		let pOutAbs = convertPressure(pressureOutValue, pressureOutUnit);
 		let z = pInAbs / pOutAbs;
 
+		latex += `Z = \\frac{P_{in}}{P_{out}} = \\frac{${pInAbs.toFixed(2)}}{${pOutAbs.toFixed(2)}} = ${z.toFixed(3)} \\\\[10pt]`;
+
 		// 4. Lag Time
 		// t = V/Q * Z * Lag + Add
 		resultTime = (volCC / flowCC_S) * z * lagOrder + additionalTime;
+
+		latex += `t = \\frac{V}{Q} \\times Z \\times \\text{Lag} + t_{add} = \\frac{${volCC.toFixed(2)}}{${flowCC_S.toFixed(2)}} \\times ${z.toFixed(3)} \\times ${lagOrder} + ${additionalTime} = ${resultTime.toFixed(2)} \\text{ s}`;
+
+		stepLatex = katex.renderToString(latex, { displayMode: true, fleqn: true });
 
 		// 5. Velocity (only relevant for tube really, but we cancalc based on length/time?)
 		// Requirement says: Output volume, velocity, calculated lag time.
@@ -110,36 +116,6 @@
 		} else {
 			resultVelocity = 0;
 		}
-
-		// Generate LaTeX Steps
-		// 1. Volume Step
-		let volLatex = '';
-		if (mode === 'tube') {
-			let odMM = convertLength(odValue, odUnit);
-			let wallMM = convertLength(wallValue, wallUnit);
-			let idMM = odMM - 2 * wallMM;
-			let idCm = idMM / 10;
-			let lenMM = convertLength(lengthValue, lengthUnit);
-			let lenCm = lenMM / 10;
-			volLatex = `V = \\frac{\\pi \\times (ID_{cm})^2}{4} \\times L_{cm} = \\frac{\\pi \\times (${idCm.toFixed(3)})^2}{4} \\times ${lenCm.toFixed(1)} = ${volCC.toFixed(2)} \\text{ cc}`;
-		} else {
-			volLatex = `V = ${volumeValue} \\text{ ${volumeUnit}} = ${volCC.toFixed(2)} \\text{ cc}`;
-		}
-		stepVolumeHtml = katex.renderToString(volLatex, { displayMode: true });
-
-		// 2. Flow Step
-		let flowLatex = `Q = ${flowRateValue} \\text{ ${flowRateUnit}} = ${flowCC_S.toFixed(2)} \\text{ cc/s}`;
-		stepFlowHtml = katex.renderToString(flowLatex, { displayMode: true });
-
-		// 3. Z Step
-		let zLatex = `Z = \\frac{P_{in}}{P_{out}} = \\frac{${pInAbs.toFixed(2)}}{${pOutAbs.toFixed(2)}} = ${z.toFixed(3)}`;
-		stepZHtml = katex.renderToString(zLatex, { displayMode: true });
-
-		// 4. Time Step
-		let timeLatex = `t = \\frac{V}{Q} \\times Z \\times \\text{Lag} + t_{add}`;
-		timeLatex += ` = \\frac{${volCC.toFixed(2)}}{${flowCC_S.toFixed(2)}} \\times ${z.toFixed(3)} \\times ${lagOrder} + ${additionalTime}`;
-		timeLatex += ` = ${resultTime.toFixed(2)} \\text{ s}`;
-		stepTimeHtml = katex.renderToString(timeLatex, { displayMode: true });
 
 		calculated = true;
 	}
@@ -256,10 +232,7 @@
 			<Column>
 				<Tile>
 					<h4>Calculation Steps:</h4>
-					<div class="latex-step">{@html stepVolumeHtml}</div>
-					<div class="latex-step">{@html stepFlowHtml}</div>
-					<div class="latex-step">{@html stepZHtml}</div>
-					<div class="latex-step">{@html stepTimeHtml}</div>
+					<div class="latex-step">{@html stepLatex}</div>
 				</Tile>
 			</Column>
 		</Row>
