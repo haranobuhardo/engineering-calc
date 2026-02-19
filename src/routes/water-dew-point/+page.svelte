@@ -64,12 +64,12 @@
 		result = wdp_kelvin - 273.15;
 
 		let latex = `
-			P_{H_2O} = P_{sys} \\times y_{H_2O} \\times 760 \\\\
-			P_{H_2O} = ${p_atm.toFixed(3)} \\text{ atm} \\times ${fraction.toExponential(2)} \\times 760 = ${p_h2o_mmhg.toFixed(4)} \\text{ mmHg} \\\\
-			T_{K} = \\frac{5038.13}{20.1424 - \\ln(P_{H_2O})} = \\frac{5038.13}{20.1424 - \\ln(${p_h2o_mmhg.toFixed(4)})} = ${wdp_kelvin.toFixed(2)} \\text{ K} \\\\
+			P_{H_2O} = P_{sys} \\times y_{H_2O} \\times 760 \\\\[10pt]
+			P_{H_2O} = ${p_atm.toFixed(3)} \\text{ atm} \\times ${fraction.toExponential(2)} \\times 760 = ${p_h2o_mmhg.toFixed(4)} \\text{ mmHg} \\\\[10pt]
+			T_{K} = \\frac{5038.13}{20.1424 - \\ln(P_{H_2O})} = \\frac{5038.13}{20.1424 - \\ln(${p_h2o_mmhg.toFixed(4)})} = ${wdp_kelvin.toFixed(2)} \\text{ K} \\\\[10pt]
 			T_{^{\\circ}C} = ${wdp_kelvin.toFixed(2)} - 273.15 = ${result.toFixed(2)} ^{\\circ}\\text{C}
 		`;
-		stepLatex = katex.renderToString(latex, { displayMode: true });
+		stepLatex = katex.renderToString(latex, { displayMode: true, fleqn: true });
 	}
 </script>
 
@@ -154,4 +154,8 @@
 	.latex-step{
 		overflow-x: auto;
 	}
+
+	.katex-display > .katex { white-space: normal }
+    /* Add space between broken lines: */
+    .katex-display > .base { margin: 1em 0 }
 </style>

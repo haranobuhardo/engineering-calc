@@ -31,7 +31,7 @@
 			result = gradient * (inputValue - 4) + minRange;
 
 			let latex = `PV = \\left( \\frac{${maxRange} - ${minRange}}{20 - 4} \\right) \\times (${inputValue} - 4) + ${minRange} = ${result.toFixed(2)}`;
-			stepLatex = katex.renderToString(latex, { displayMode: true });
+			stepLatex = katex.renderToString(latex, { displayMode: true, fleqn: true });
 
 		} else {
 			// Process Value to mA
@@ -41,7 +41,7 @@
 			result = gradient * (inputValue - minRange) + 4;
 
 			let latex = `mA = \\left( \\frac{20 - 4}{${maxRange} - ${minRange}} \\right) \\times (${inputValue} - ${minRange}) + 4 = ${result.toFixed(2)}`;
-			stepLatex = katex.renderToString(latex, { displayMode: true });
+			stepLatex = katex.renderToString(latex, { displayMode: true, fleqn: true });
 		}
 	}
 </script>
@@ -130,5 +130,9 @@
 	.result-text {
 		font-size: 1.5rem;
 		font-weight: 600;
+	}
+
+	.latex-step{
+		overflow-x: auto;
 	}
 </style>

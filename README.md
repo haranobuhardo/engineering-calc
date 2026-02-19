@@ -1,13 +1,14 @@
 ## To do list
 - [X] lag time calculator
 - [X] reynold number calculator
-- [ ] water dew point
+- [X] water dew point
+- [ ] gas concentration conversion (mg/m3 to ppmv or vice versa) (based on your Excel file Gas Concentration Conversion.xlsx)
 - [ ] acid dew point
 - [ ] wake frequency calc
 - [ ] pressure drop calc
 - [ ] heat loss calc
-- [ ] analog signal conversion
-- [ ] span factor calculation
+- [X] analog signal conversion
+- [X] span factor calculation
 - [ ] (ADVANCED) orifice calculation
 - [ ] (ADVANCED) GERG 2008 or AGA 7 Calculation
 - [X] FIX PWA Offline error

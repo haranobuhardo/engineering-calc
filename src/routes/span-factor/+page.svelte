@@ -29,8 +29,11 @@
 		result_error = (Math.abs(measuredValue - trueValue) / trueValue) * 100;
 		result_span = (trueValue / measuredValue) * initialSpanFactor;
 
-		let latex = `\\text{Error} \\% = \\left| \\frac{\\text{Measured} - \\text{True}}{\\text{True}} \\right| \\times 100 \\\\ = \\left| \\frac{${measuredValue} - ${trueValue}}{${trueValue}} \\right| \\times 100 = ${result_error.toFixed(4)} \\%`;
-		stepLatex = katex.renderToString(latex, { displayMode: true });
+		let latex = `
+		\\text{Error} \\% = \\left| \\frac{\\text{Measured} - \\text{True}}{\\text{True}} \\right| \\times 100 \\\\[10pt]
+	    = \\left| \\frac{${measuredValue} - ${trueValue}}{${trueValue}} \\right| \\times 100 = ${result_error.toFixed(4)} \\%
+		`;
+		stepLatex = katex.renderToString(latex, { displayMode: true, fleqn: true });
 	}
 </script>
 
@@ -102,5 +105,9 @@
 	.result-text {
 		font-size: 1.2rem;
 		font-weight: 600;
+	}
+
+	.latex-step{
+		overflow-x: auto;
 	}
 </style>
