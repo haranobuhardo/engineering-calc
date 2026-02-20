@@ -3,8 +3,8 @@
 - [X] reynold number calculator
 - [X] water dew point
 - [ ] gas concentration conversion (mg/m3 to ppmv or vice versa) (based on your Excel file Gas Concentration Conversion.xlsx)
-- [ ] acid dew point
-- [ ] wake frequency calc
+- [ ] acid dew point (H2SO4, HCl)
+- [ ] wake frequency calc (ada satu lagi tapi lupa, untuk probe di vertical pipe)
 - [ ] pressure drop calc
 - [ ] heat loss calc
 - [X] analog signal conversion
