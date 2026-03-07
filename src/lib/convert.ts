@@ -126,3 +126,56 @@ export const densityUnits = [
     { id: 'lbs/ft3', text: 'lbs/ft3' },
     { id: 'kg/m3', text: 'kg/m3' }
 ];
+
+export function convertTemperature(temperature: number, unit: string): number {
+    // convert temperature to base unit, Kelvin
+    switch (unit) {
+        case "C":
+        case "°C":
+            return temperature + 273.15;
+        case "F":
+        case "°F":
+            return (temperature - 32) * 5/9 + 273.15;
+        case "K":
+        default:
+            return temperature * 1;
+    }
+}
+
+export function convertThermalConductivity(k: number, unit: string): number {
+    // convert thermal conductivity to base unit, W/(m·K)
+    switch (unit) {
+        case "BTU/(hr·ft·°F)":
+            return k * 1.730735;
+        case "W/(m·K)":
+        default:
+            return k * 1;
+    }
+}
+
+export function convertSpecificHeat(c: number, unit: string): number {
+    // convert specific heat capacity to base unit, J/(kg·K)
+    switch (unit) {
+        case "BTU/(lb·°F)":
+            return c * 4186.8;
+        case "J/(kg·K)":
+        default:
+            return c * 1;
+    }
+}
+
+export const temperatureUnits = [
+    { id: 'K', text: 'K' },
+    { id: 'C', text: '°C' },
+    { id: 'F', text: '°F' }
+];
+
+export const thermalConductivityUnits = [
+    { id: 'W/(m·K)', text: 'W/(m·K)' },
+    { id: 'BTU/(hr·ft·°F)', text: 'BTU/(hr·ft·°F)' }
+];
+
+export const specificHeatUnits = [
+    { id: 'J/(kg·K)', text: 'J/(kg·K)' },
+    { id: 'BTU/(lb·°F)', text: 'BTU/(lb·°F)' }
+];
