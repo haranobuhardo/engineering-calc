@@ -14,7 +14,10 @@ export const calcLinks: CalcLink[] = [
 	{ href: '/lag-time', label: 'Lag Time', id: 'lag-time' },
 	{ href: '/analog-signal', label: 'Analog Converter', id: 'analog-signal' },
 	{ href: '/span-factor', label: 'Span Factor', id: 'span-factor' },
-	{ href: '/water-dew-point', label: 'Water Dew Point', id: 'water-dew-point' }
+	{ href: '/water-dew-point', label: 'Water Dew Point', id: 'water-dew-point' },
+	{ href: '/tube-heat-loss', label: 'Tube Heat Loss', id: 'tube-heat-loss' },
+	{ href: '/friction-pressure-drop', label: 'Friction Pressure Drop', id: 'friction-pressure-drop' },
+	{ href: '/acid-gas', label: 'Acid Gas Dew Point', id: 'acid-gas' }
 ];
 
 export const siteConfig: SiteConfig = {

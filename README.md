@@ -2,11 +2,12 @@
 - [X] lag time calculator
 - [X] reynold number calculator
 - [X] water dew point
+- [ ] flow rate compensation (ACTUAL to STANDARD)
 - [ ] gas concentration conversion (mg/m3 to ppmv or vice versa) (based on your Excel file Gas Concentration Conversion.xlsx)
-- [ ] acid dew point (H2SO4, HCl)
+- [X] acid dew point (H2SO4, HCl)
 - [ ] wake frequency calc (another calc for probe in vertical pipe)
-- [ ] pressure drop calc
-- [ ] heat loss calc
+- [X] pressure drop calc
+- [X] heat loss calc
 - [X] analog signal conversion
 - [X] span factor calculation
 - [ ] (ADVANCED) orifice calculation
