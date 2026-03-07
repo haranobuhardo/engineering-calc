@@ -14,7 +14,7 @@
 
 	let outsideDiameterValue = $state(0.25);
 	let outsideDiameterUnit = $state('in');
-	let lengthValue = $state(1);
+	// let lengthValue = $state(1);
 	let lengthUnit = $state('m');
 	let wallThicknessValue = $state(0.035);
 	let wallThicknessUnit = $state('in');
@@ -48,7 +48,7 @@
 	function calcRelRoughness(absRoughness: number, insideDiameter: number): number {
 		// absRoughness: meter (m)
 		// insideDiameter: meter (m)
-		// Wait, absRoughnessValue input is unit aware, convertedAbsRoughness depends on unit. 
+		// Wait, absRoughnessValue input is unit aware, convertedAbsRoughness depends on unit.
 		// Usually roughness k is in mm or similar small unit.
 		return absRoughness / insideDiameter;
 	}
@@ -77,7 +77,7 @@
 
 		let insideDiameter: number = calcID(convertedOD, convertedThickness); // in mm
 		let velocity: number = calcVelocity(insideDiameter, convertedFlowRate); // in m/s
-		
+
 		reynoldsNumber = calcReynoldsNumber(
 			insideDiameter / 1000,
 			convertedDensity,
@@ -91,7 +91,7 @@
 			v = \\frac{Q}{A} = \\frac{${(convertedFlowRate / 1000 / 60).toExponential(2)} \\text{ m}^3/\\text{s}}{\\frac{\\pi(ID/1000)^2}{4}} = ${velocity.toFixed(2)} \\text{ m/s} \\\\[10pt]
 			Re = \\frac{\\rho v D}{\\mu} = \\frac{${convertedDensity.toFixed(2)} \\times ${velocity.toFixed(2)} \\times ${(insideDiameter / 1000).toFixed(4)}}{${convertedViscosity.toFixed(4)}} = ${reynoldsNumber.toFixed(0)}
 		`;
-		
+
 		stepLatex = katex.renderToString(latex, { displayMode: true, fleqn: true });
 	}
 </script>
@@ -120,14 +120,14 @@
 	</Row>
 
 	<!-- Length (l) -->
-	<Row class="mb-4 items-end">
+	<!-- <Row class="mb-4 items-end">
 		<Column sm={2} md={5} lg={5}>
 			<NumberInput labelText="Length (l)" bind:value={lengthValue} hideSteppers />
 		</Column>
 		<Column sm={2} md={3} lg={3}>
 			<Dropdown bind:selectedId={lengthUnit} items={lengthUnits} label="Unit" />
 		</Column>
-	</Row>
+	</Row> -->
 
 	<!-- Wall Thickness (sch) -->
 	<Row class="mb-4 items-end">
