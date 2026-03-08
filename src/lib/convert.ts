@@ -49,6 +49,51 @@ export function convertDensity(density: number, unit: string): number {
     }
 }
 
+export function convertModulusOfElasticity(modulus: number, unit: string): number {
+    // convert modulus of elasticity to base unit, psi
+    switch (unit) {
+        case "Pa":
+            return modulus * 0.000145038;
+        case "kPa":
+            return modulus * 0.145038;
+        case "MPa":
+            return modulus * 145.038;
+        case "GPa":
+            return modulus * 145038;
+        case "psi":
+        default:
+            return modulus * 1;
+    }
+}
+
+export function convertSpecificWeight(weight: number, unit: string): number {
+    // convert specific weight to base unit, lb/in³
+    switch (unit) {
+        case "N/m3":
+            return weight * 0.000003684;
+        case "kN/m3":
+            return weight * 0.003684;
+        case "lb/in3":
+        default:
+            return weight * 1;
+    }
+}
+
+export function convertVelocity(velocity: number, unit: string): number {
+    // convert velocity to base unit, m/s
+    switch (unit) {
+        case "ft/s":
+            return velocity * 0.3048;
+        case "km/h":
+            return velocity * 0.277778;
+        case "mph":
+            return velocity * 0.44704;
+        case "m/s":
+        default:
+            return velocity * 1;
+    }
+}
+
 export function convertVolume(volume: number, unit: string): number {
     // convert volume to base unit, cc (cm3)
     switch (unit) {
@@ -81,10 +126,16 @@ export function convertPressure(pressure: number, unit: string): number {
             return pressure * 14.503774;
         case "atm":
             return pressure * 14.695949;
+        case "kPa":
+            return pressure * 0.145038;
+        case "Pa":
+            return pressure * 0.000145038;
         default:
             return pressure;
     }
 }
+
+
 
 export const lengthUnits = [
     { id: 'in', text: 'in' },
@@ -111,10 +162,12 @@ export const flowRateUnits = [
 ];
 
 export const pressureUnits = [
-    { id: 'psia', text: 'psia' },
-    { id: 'psig', text: 'psig' },
+    { id: 'kPa', text: 'kPa' },
+    { id: 'Pa', text: 'Pa' },
     { id: 'bar', text: 'bar' },
-    { id: 'atm', text: 'atm' }
+    { id: 'atm', text: 'atm' },
+    { id: 'psia', text: 'psia' },
+    { id: 'psig', text: 'psig' }
 ];
 
 export const viscosityUnits = [
@@ -125,6 +178,27 @@ export const viscosityUnits = [
 export const densityUnits = [
     { id: 'lbs/ft3', text: 'lbs/ft3' },
     { id: 'kg/m3', text: 'kg/m3' }
+];
+
+export const velocityUnits = [
+    { id: 'm/s', text: 'm/s' },
+    { id: 'ft/s', text: 'ft/s' },
+    { id: 'km/h', text: 'km/h' },
+    { id: 'mph', text: 'mph' }
+];
+
+export const modulusOfElasticityUnits = [
+    { id: 'psi', text: 'psi' },
+    { id: 'Pa', text: 'Pa' },
+    { id: 'kPa', text: 'kPa' },
+    { id: 'MPa', text: 'MPa' },
+    { id: 'GPa', text: 'GPa' }
+];
+
+export const specificWeightUnits = [
+    { id: 'lb/in3', text: 'lb/in³' },
+    { id: 'N/m3', text: 'N/m³' },
+    { id: 'kN/m3', text: 'kN/m³' }
 ];
 
 export function convertTemperature(temperature: number, unit: string): number {

@@ -17,7 +17,10 @@ export const calcLinks: CalcLink[] = [
 	{ href: '/water-dew-point', label: 'Water Dew Point', id: 'water-dew-point' },
 	{ href: '/tube-heat-loss', label: 'Tube Heat Loss', id: 'tube-heat-loss' },
 	{ href: '/friction-pressure-drop', label: 'Friction Pressure Drop', id: 'friction-pressure-drop' },
-	{ href: '/acid-gas', label: 'Acid Gas Dew Point', id: 'acid-gas' }
+	{ href: '/acid-gas', label: 'Acid Gas Dew Point', id: 'acid-gas' },
+	{ href: '/gas-concentration', label: 'Gas Concentration Conversion', id: 'gas-concentration' },
+	{ href: '/flow-induced-bending', label: 'Flow Induced Bending Stress', id: 'flow-induced-bending' },
+	{ href: '/wake-frequency', label: 'Wake Frequency Calculation', id: 'wake-frequency' }
 ];
 
 export const siteConfig: SiteConfig = {
