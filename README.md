@@ -3,9 +3,9 @@
 - [X] reynold number calculator
 - [X] water dew point
 - [ ] flow rate compensation (ACTUAL to STANDARD)
-- [ ] gas concentration conversion (mg/m3 to ppmv or vice versa) (based on your Excel file Gas Concentration Conversion.xlsx)
+- [X] gas concentration conversion (mg/m3 to ppmv or vice versa) (based on your Excel file Gas Concentration Conversion.xlsx)
 - [X] acid dew point (H2SO4, HCl)
-- [ ] wake frequency calc (another calc for probe in vertical pipe)
+- [X] wake frequency calc (another calc for probe in vertical pipe)
 - [X] pressure drop calc
 - [X] heat loss calc
 - [X] analog signal conversion
