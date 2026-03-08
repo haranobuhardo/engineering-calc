@@ -1,10 +1,17 @@
 <script lang="ts">
 	import { siteConfig } from '$lib/nav';
+	import { 
+		convertTemperature, 
+		convertPressure, 
+		temperatureUnits, 
+		pressureUnits 
+	} from '$lib/convert';
 	import {
 		Grid,
 		Row,
 		Column,
 		NumberInput,
+		Dropdown,
 		Button,
 		Tile,
 		RadioButtonGroup,
@@ -16,7 +23,9 @@
 
 	let mode = $state('calculate-so3'); // 'calculate-so3' or 'direct-so3'
 	let temperature = $state(1000); // °C (for SO3 conversion)
+	let temperatureUnit = $state('C');
 	let pressure = $state(1); // atm
+	let pressureUnit = $state('atm');
 	let h2oContent = $state(0.1); // mole fraction
 	let so2Content = $state(0.01); // mole fraction
 	let o2Content = $state(0.05); // mole fraction
@@ -29,12 +38,18 @@
 
 	function calculate() {
 		let so3Value: number;
-
+		
+		// Convert temperature and pressure to base units
+		const T_kelvin = convertTemperature(temperature, temperatureUnit);
+		const T = T_kelvin - 273.15; // Convert to Celsius for SO3 conversion formula
+		const P_atm = convertPressure(pressure, pressureUnit);
+		const P_psia = P_atm; // convertPressure returns psia
+		const P = P_psia / 14.696; // Convert psia to atm
+		
 		if (mode === 'calculate-so3') {
 			// Calculate SO3 from SO2 and O2
 			// Kp formula: 10^((0.4342*(31.752231-0.040591095*T))/(1+0.0037782493*T))
-			// where T is in Celsius (using 1000°C as per Python code)
-			const T = temperature;
+			// where T is in Celsius
 			const Kp_numerator = 0.4342 * (31.752231 - 0.040591095 * T);
 			const Kp_denominator = 1 + 0.0037782493 * T;
 			const Kp = Math.pow(10, Kp_numerator / Kp_denominator);
@@ -60,8 +75,8 @@
 		}
 
 		// Calculate partial pressures (in atm)
-		const p_H2O = h2oContent * pressure;
-		const p_SO3 = so3Value * pressure;
+		const p_H2O = h2oContent * P;
+		const p_SO3 = so3Value * P;
 
 		// Calculate acid dew points
 		acidDewPoints = {
@@ -144,17 +159,23 @@
 
 	<!-- Temperature (for SO3 conversion) -->
 	{#if mode === 'calculate-so3'}
-		<Row class="mb-4">
-			<Column sm={4} md={4} lg={4}>
-				<NumberInput labelText="Temperature (°C)" bind:value={temperature} hideSteppers />
+		<Row class="mb-4 items-end">
+			<Column sm={2} md={5} lg={5}>
+				<NumberInput labelText="Temperature" bind:value={temperature} hideSteppers />
+			</Column>
+			<Column sm={2} md={3} lg={3}>
+				<Dropdown bind:selectedId={temperatureUnit} items={temperatureUnits} label="Unit" />
 			</Column>
 		</Row>
 	{/if}
 
 	<!-- Pressure -->
-	<Row class="mb-4">
-		<Column sm={4} md={4} lg={4}>
-			<NumberInput labelText="Pressure (atm)" bind:value={pressure} hideSteppers />
+	<Row class="mb-4 items-end">
+		<Column sm={2} md={5} lg={5}>
+			<NumberInput labelText="Pressure" bind:value={pressure} hideSteppers />
+		</Column>
+		<Column sm={2} md={3} lg={3}>
+			<Dropdown bind:selectedId={pressureUnit} items={pressureUnits} label="Unit" />
 		</Column>
 	</Row>
 
