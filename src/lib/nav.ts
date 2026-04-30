@@ -20,7 +20,8 @@ export const calcLinks: CalcLink[] = [
 	{ href: '/acid-gas', label: 'Acid Gas Dew Point', id: 'acid-gas' },
 	{ href: '/gas-concentration', label: 'Gas Concentration Conversion', id: 'gas-concentration' },
 	{ href: '/flow-induced-bending', label: 'Flow Induced Bending Stress', id: 'flow-induced-bending' },
-	{ href: '/wake-frequency', label: 'Wake Frequency Calculation', id: 'wake-frequency' }
+	{ href: '/wake-frequency', label: 'Wake Frequency Calculation', id: 'wake-frequency' },
+	{ href: '/hcdp', label: 'HCDP Calculator', id: 'hcdp' }
 ];
 
 export const siteConfig: SiteConfig = {

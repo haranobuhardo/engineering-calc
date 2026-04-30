@@ -25,9 +25,10 @@ export default defineConfig({
 			},
 			workbox: {
 				// Cache all prerendered pages and static assets
-				globPatterns: ['**/*.{js,css,html,svg,png,ico,woff,woff2}'],
+				globPatterns: ['**/*.{js,css,html,svg,png,ico,woff,woff2,wasm}'],
 				// Handle navigation requests offline
 				navigateFallback: '/',
+				maximumFileSizeToCacheInBytes: 8 * 1024 * 1024 // 8MB for coolprop.wasm
 			}
 		})
 	]
