@@ -222,7 +222,7 @@
 		</Row>
 
 		{#each composition as row, i (row.id)}
-			<Row class="mb-2 items-end">
+			<Row class="mb-4 items-end">
 				<Column sm={2} md={5} lg={5}>
 					<Dropdown
 						selectedId={row.fluid}
@@ -267,7 +267,7 @@
 			<Column>
 				<p class="total-info">
 					Total mole fraction: {totalFraction.toFixed(4)}
-					{#if totalFraction > 0}
+					{#if totalFraction != 1.0}
 						<span class="normalize-note">(will be auto-normalized to 1.0)</span>
 					{/if}
 				</p>
@@ -307,7 +307,7 @@
 			<Row class="mt-4">
 				<Column>
 					<Tile>
-						<h4>Normalized Composition (PR EOS):</h4>
+						<h4>Gas Composition:</h4>
 						<table class="comp-table">
 							<thead>
 								<tr>
