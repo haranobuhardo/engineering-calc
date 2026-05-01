@@ -11,8 +11,7 @@
 		Tile,
 		Loading
 	} from 'carbon-components-svelte';
-	import { AddFilled } from 'carbon-icons-svelte';
-	import CompositionRow from './CompositionRow.svelte';
+	import { AddFilled, SubtractFilled } from 'carbon-icons-svelte';
 
 	interface CompositionEntry {
 		id: number;
@@ -207,10 +206,10 @@
 
 		<!-- Pressure Input -->
 		<Row class="mb-4 items-end">
-			<Column sm={4} md={5} lg={5}>
+			<Column sm={2} md={5} lg={5}>
 				<NumberInput labelText="Pressure" bind:value={pressure} hideSteppers />
 			</Column>
-			<Column sm={4} md={3} lg={3}>
+			<Column sm={2} md={3} lg={3}>
 				<Dropdown bind:selectedId={pressureUnit} items={pressureUnits} label="Unit" />
 			</Column>
 		</Row>
@@ -222,22 +221,37 @@
 			</Column>
 		</Row>
 
-		<Row>
-			<Column>
-				{#each composition as row, i (row.id)}
-					<CompositionRow
-						{fluidItems}
-						selectedFluid={row.fluid}
-						moleFraction={row.moleFraction}
-						canRemove={composition.length > 1}
-						showLabels={i === 0}
-						onremove={() => removeRow(row.id)}
-						onfluidchange={(f) => updateFluid(row.id, f)}
-						onfractionchange={(v) => updateFraction(row.id, v)}
+		{#each composition as row, i (row.id)}
+			<Row class="mb-2 items-end">
+				<Column sm={2} md={5} lg={5}>
+					<Dropdown
+						selectedId={row.fluid}
+						items={fluidItems}
+						label={i === 0 ? 'Component Name' : ''}
+						on:select={(e) => updateFluid(row.id, e.detail.selectedId)}
 					/>
-				{/each}
-			</Column>
-		</Row>
+				</Column>
+				<Column sm={2} md={3} lg={3}>
+					<NumberInput
+						labelText={i === 0 ? 'Mole Fraction' : ''}
+						value={row.moleFraction}
+						hideSteppers
+						step={0.01}
+						on:change={(e) => updateFraction(row.id, Number(e.detail))}
+					/>
+				</Column>
+				<Column sm={1} md={1} lg={1} class="remove-col">
+					<button
+						class="remove-btn"
+						onclick={() => removeRow(row.id)}
+						disabled={composition.length <= 1}
+						title="Remove"
+					>
+						<SubtractFilled size={16} />
+					</button>
+				</Column>
+			</Row>
+		{/each}
 
 		<!-- Add & Total -->
 		<Row class="mb-2">
@@ -416,5 +430,28 @@
 	.error {
 		color: #da1e28;
 		font-weight: 500;
+	}
+
+	:global(.remove-col) {
+		display: flex;
+		align-items: flex-end;
+		padding-bottom: 0.15rem;
+	}
+
+	.remove-btn {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.5rem;
+		color: #525252;
+	}
+
+	.remove-btn:hover:not(:disabled) {
+		background: #e0e0e0;
+	}
+
+	.remove-btn:disabled {
+		opacity: 0.3;
+		cursor: not-allowed;
 	}
 </style>
