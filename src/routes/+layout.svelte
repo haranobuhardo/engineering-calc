@@ -10,10 +10,12 @@
 		SideNavItems,
 		SideNavLink,
 		SideNavDivider,
+		SideNavMenu,
+		SideNavMenuItem,
 		Content,
 		SkipToContent
 	} from 'carbon-components-svelte';
-	import { calcLinks } from '$lib/nav';
+	import { calcGroups } from '$lib/nav';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { pwaInfo } from 'virtual:pwa-info';
@@ -51,12 +53,19 @@
 	<SideNavItems>
 		<SideNavLink href="/" text="Home" isSelected={$page.url.pathname === '/'} />
 		<SideNavDivider />
-		{#each calcLinks as calcLink (calcLink.id)}
-			<SideNavLink
-				href={calcLink.href}
-				text={calcLink.label}
-				isSelected={$page.url.pathname === calcLink.href}
-			/>
+		{#each calcGroups as group (group.id)}
+			<SideNavMenu
+				text={group.label}
+				expanded={group.items.some((c) => $page.url.pathname === c.href)}
+			>
+				{#each group.items as calc (calc.id)}
+					<SideNavMenuItem
+						href={calc.href}
+						text={calc.label}
+						isSelected={$page.url.pathname === calc.href}
+					/>
+				{/each}
+			</SideNavMenu>
 		{/each}
 	</SideNavItems>
 </SideNav>
