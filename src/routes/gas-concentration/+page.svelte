@@ -25,7 +25,7 @@
 	let mode = $state('ppmv-to-mgm3'); // 'ppmv-to-mgm3' or 'mgm3-to-ppmv'
 
 	// Condition presets
-	let condition = $state('SATP'); // 'SATP', 'NTP', 'STP', 'Other'
+	let condition = $state<keyof typeof conditions>('SATP'); // 'SATP', 'NTP', 'STP', 'Other'
 	
 	// Temperature and pressure (will be set based on condition)
 	let temperature = $state(25); // °C
@@ -43,7 +43,7 @@
 	// Results
 	let result = $state<number | null>(null);
 	let percentVol = $state<number | null>(null);
-	let molarVolume = $state<number | null>(null);
+	let molarVolume = $state<number>(0);
 	let stepLatex = $state('');
 
 	// Predefined conditions

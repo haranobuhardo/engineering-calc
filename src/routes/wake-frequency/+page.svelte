@@ -35,10 +35,10 @@
 	let pipeDiameterUnit = $state('mm');
 
 	// Results
-	let pipeArea = $state<number | null>(null);
-	let velocity = $state<number | null>(null);
-	let naturalFrequency = $state<number | null>(null);
-	let strouhalFrequency = $state<number | null>(null);
+	let pipeArea = $state<number>(0);
+	let velocity = $state<number>(0);
+	let naturalFrequency = $state<number>(0);
+	let strouhalFrequency = $state<number>(0);
 	let magnificationFactor = $state<number | null>(null);
 	let status = $state<string | null>(null);
 	let stepLatex = $state('');

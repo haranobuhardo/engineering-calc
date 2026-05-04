@@ -16,7 +16,7 @@
 	let trueValue = $state(100.0);
 	let result_error = $state<number | null>(null);
 	let result_span = $state<number | null>(null);
-	let initialSpanFactor = $state<number | null>(1.00);
+	let initialSpanFactor = $state<number>(1.00);
 	let stepLatex = $state('');
 
 	function calculate() {

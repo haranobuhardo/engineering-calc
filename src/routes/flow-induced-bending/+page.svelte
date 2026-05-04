@@ -27,7 +27,7 @@
 	let ratio = $state(0.584); // Fraction of exposed section (L_exp/L)
 
 	let flowStress = $state<number | null>(null);
-	let flowStressMPa = $state<number | null>(null);
+	let flowStressMPa = $state<number>(0);
 	let stepLatex = $state('');
 
 	function calculate() {
