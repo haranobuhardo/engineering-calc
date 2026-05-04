@@ -6,7 +6,7 @@
 		Row,
 		Column,
 		NumberInput,
-		Dropdown,
+		ComboBox,
 		Button,
 		Tile,
 		Loading
@@ -42,6 +42,13 @@
 
 	const fluidItems = supportedFluids.map((f) => ({ id: f, text: f }));
 
+	function getAvailableItems(currentRowId: number) {
+		const usedFluids = new Set(
+			composition.filter((r) => r.id !== currentRowId && r.fluid).map((r) => r.fluid)
+		);
+		return fluidItems.filter((item) => !usedFluids.has(item.id));
+	}
+
 	// Engine state
 	let engineReady = $state(false);
 	let engineError: string | null = $state(null);
@@ -49,12 +56,19 @@
 	// Calculator inputs
 	let pressure = $state(50);
 	let pressureUnit = $state('bar');
-	let nextId = $state(4);
+	let nextId = $state(10);
 
+	// Default composition: C1–C6 + H2O (typical natural gas)
 	let composition = $state<CompositionEntry[]>([
-		{ id: 1, fluid: 'Methane', moleFraction: 0.9 },
-		{ id: 2, fluid: 'Ethane', moleFraction: 0.07 },
-		{ id: 3, fluid: 'Propane', moleFraction: 0.03 }
+		{ id: 1, fluid: 'Methane', moleFraction: 0.872 },
+		{ id: 2, fluid: 'Ethane', moleFraction: 0.06 },
+		{ id: 3, fluid: 'Propane', moleFraction: 0.03 },
+		{ id: 4, fluid: 'IsoButane', moleFraction: 0.008 },
+		{ id: 5, fluid: 'n-Butane', moleFraction: 0.012 },
+		{ id: 6, fluid: 'Isopentane', moleFraction: 0.004 },
+		{ id: 7, fluid: 'n-Pentane', moleFraction: 0.006 },
+		{ id: 8, fluid: 'Hexane', moleFraction: 0.003 },
+		{ id: 9, fluid: 'Water', moleFraction: 0.005 }
 	]);
 
 	// Results
@@ -88,7 +102,7 @@
 	function addRow() {
 		composition = [
 			...composition,
-			{ id: nextId++, fluid: 'Methane', moleFraction: 0 }
+			{ id: nextId++, fluid: '', moleFraction: 0 }
 		];
 	}
 
@@ -210,7 +224,14 @@
 				<NumberInput labelText="Pressure" bind:value={pressure} hideSteppers />
 			</Column>
 			<Column sm={2} md={3} lg={3}>
-				<Dropdown bind:selectedId={pressureUnit} items={pressureUnits} label="Unit" />
+				<ComboBox
+					items={pressureUnits}
+					selectedId={pressureUnit}
+					itemToString={(item) => item?.text ?? ''}
+					labelText="Unit"
+					shouldFilterItem={() => true}
+					on:select={(e) => (pressureUnit = e.detail.selectedId)}
+				/>
 			</Column>
 		</Row>
 
@@ -222,13 +243,19 @@
 		</Row>
 
 		{#each composition as row, i (row.id)}
+			{@const items = getAvailableItems(row.id)}
 			<Row class="mb-4 items-end">
 				<Column sm={2} md={5} lg={5}>
-					<Dropdown
-						selectedId={row.fluid}
-						items={fluidItems}
-						label={i === 0 ? 'Component Name' : ''}
+					<ComboBox
+						{items}
+						itemToString={(item) => item?.text ?? ''}
+						selectedId={row.fluid || undefined}
+						labelText={i === 0 ? 'Component Name' : ''}
+						placeholder="Search component..."
+						shouldFilterItem={(item, value) =>
+							item.text.toLowerCase().includes(value.toLowerCase())}
 						on:select={(e) => updateFluid(row.id, e.detail.selectedId)}
+						on:clear={() => updateFluid(row.id, '')}
 					/>
 				</Column>
 				<Column sm={2} md={3} lg={3}>
