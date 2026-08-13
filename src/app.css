@@ -1,2 +1,18 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+/* Print: show only the calculator Content area, hide the shell chrome. */
+@media print {
+	.bx--header,
+	.bx--side-nav,
+	.bx--side-nav__overlay,
+	.bx--skip-to-content {
+		display: none !important;
+	}
+	.bx--content {
+		margin-left: 0 !important;
+	}
+	body {
+		padding: 0 !important;
+	}
+}
