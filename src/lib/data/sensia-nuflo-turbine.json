@@ -1,0 +1,108 @@
+{
+	"manufacturer": "Sensia",
+	"series": "NuFlo Liquid Turbine Flow Meter",
+	"baseUnit": "gpm",
+	"overrunFactor": 1.5,
+	"notes": "Digitized directly from the official Sensia NuFlo Pressure Drop Chart (Fluid is water @ 68°F). Each line is defined by its log-log endpoints (minFlow, minDpPsi) and (maxFlow, maxDpPsi).",
+	"meters": [
+		{
+			"id": "3/8",
+			"size": "3/8 in.",
+			"nominalIn": 0.375,
+			"minFlow": 0.3,
+			"maxFlow": 3.0,
+			"minDpPsi": 0.039,
+			"maxDpPsi": 3.88
+		},
+		{
+			"id": "1/2",
+			"size": "1/2 in.",
+			"nominalIn": 0.5,
+			"minFlow": 0.75,
+			"maxFlow": 7.5,
+			"minDpPsi": 0.109,
+			"maxDpPsi": 10.16
+		},
+		{
+			"id": "3/4",
+			"size": "3/4 in.",
+			"nominalIn": 0.75,
+			"minFlow": 2.0,
+			"maxFlow": 15.0,
+			"minDpPsi": 0.482,
+			"maxDpPsi": 26.67
+		},
+		{
+			"id": "7/8",
+			"size": "7/8 in.",
+			"nominalIn": 0.875,
+			"minFlow": 3.0,
+			"maxFlow": 30.0,
+			"minDpPsi": 0.257,
+			"maxDpPsi": 20.38
+		},
+		{
+			"id": "1",
+			"size": "1 in.",
+			"nominalIn": 1.0,
+			"minFlow": 5.0,
+			"maxFlow": 50.0,
+			"minDpPsi": 0.246,
+			"maxDpPsi": 21.78
+		},
+		{
+			"id": "1-1/2",
+			"size": "1-1/2 in.",
+			"nominalIn": 1.5,
+			"minFlow": 15.0,
+			"maxFlow": 180.0,
+			"minDpPsi": 0.163,
+			"maxDpPsi": 20.78
+		},
+		{
+			"id": "2",
+			"size": "2 in.",
+			"nominalIn": 2.0,
+			"minFlow": 40.0,
+			"maxFlow": 400.0,
+			"minDpPsi": 0.226,
+			"maxDpPsi": 21.85
+		},
+		{
+			"id": "3",
+			"size": "3 in.",
+			"nominalIn": 3.0,
+			"minFlow": 80.0,
+			"maxFlow": 800.0,
+			"minDpPsi": 0.186,
+			"maxDpPsi": 20.45
+		},
+		{
+			"id": "4",
+			"size": "4 in.",
+			"nominalIn": 4.0,
+			"minFlow": 100.0,
+			"maxFlow": 1200.0,
+			"minDpPsi": 0.079,
+			"maxDpPsi": 14.01
+		},
+		{
+			"id": "6",
+			"size": "6 in.",
+			"nominalIn": 6.0,
+			"minFlow": 250.0,
+			"maxFlow": 2500.0,
+			"minDpPsi": 0.084,
+			"maxDpPsi": 9.87
+		},
+		{
+			"id": "8",
+			"size": "8 in.",
+			"nominalIn": 8.0,
+			"minFlow": 350.0,
+			"maxFlow": 3500.0,
+			"minDpPsi": 0.05,
+			"maxDpPsi": 5.76
+		}
+	]
+}

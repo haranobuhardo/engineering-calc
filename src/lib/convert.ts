@@ -20,10 +20,33 @@ export function convertFlowRate(flowRate: number, unit: string): number {
             return flowRate * 1;
         case "lph":
             return flowRate / 60;
+        case "gpm":
+            return flowRate * 3.785411784;
+        case "m3/hr":
+            return (flowRate * 1000) / 60;
         case "bpd":
             return flowRate * 0.1104078437;
         default:
             return flowRate;
+    }
+}
+
+export function convertFlowRateBetween(flowRate: number, fromUnit: string, toUnit: string): number {
+    if (fromUnit === toUnit) return flowRate;
+    const inLpm = convertFlowRate(flowRate, fromUnit);
+    switch (toUnit) {
+        case "lpm":
+            return inLpm;
+        case "lph":
+            return inLpm * 60;
+        case "gpm":
+            return inLpm / 3.785411784;
+        case "m3/hr":
+            return (inLpm * 60) / 1000;
+        case "bpd":
+            return inLpm / 0.1104078437;
+        default:
+            return inLpm;
     }
 }
 
@@ -159,6 +182,14 @@ export const flowRateUnits = [
     { id: 'lpm', text: 'NLPM' },
     { id: 'lph', text: 'NLPH' },
     { id: 'bpd', text: 'BPD' }
+];
+
+export const liquidFlowRateUnits = [
+    { id: 'gpm', text: 'GPM (US)' },
+    { id: 'm3/hr', text: 'm³/hr' },
+    { id: 'bpd', text: 'BPD' },
+    { id: 'lpm', text: 'LPM' },
+    { id: 'lph', text: 'LPH' }
 ];
 
 export const pressureUnits = [
