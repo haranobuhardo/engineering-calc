@@ -60,6 +60,11 @@ export const calcGroups: CalcGroup[] = [
 				label: "Flow Induced Bending Stress",
 				id: "flow-induced-bending",
 			},
+			{
+				href: "/turbine-meter-sizing",
+				label: "Sensia NuFlo Turbine Sizing",
+				id: "turbine-meter-sizing",
+			},
 		],
 	},
 	{
