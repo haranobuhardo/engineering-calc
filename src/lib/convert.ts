@@ -1,3 +1,16 @@
+function convertBetween(
+    value: number,
+    fromUnit: string,
+    toUnit: string,
+    toBase: (val: number, unit: string) => number
+): number {
+    if (fromUnit === toUnit) return value;
+    const inBase = toBase(value, fromUnit);
+    const offset = toBase(0, toUnit);
+    const scale = toBase(1, toUnit) - offset;
+    return (inBase - offset) / scale;
+}
+
 export function convertLength(length: number, unit: string): number {
     // convert length to base unit, mm
     switch (unit) {
@@ -32,22 +45,7 @@ export function convertFlowRate(flowRate: number, unit: string): number {
 }
 
 export function convertFlowRateBetween(flowRate: number, fromUnit: string, toUnit: string): number {
-    if (fromUnit === toUnit) return flowRate;
-    const inLpm = convertFlowRate(flowRate, fromUnit);
-    switch (toUnit) {
-        case "lpm":
-            return inLpm;
-        case "lph":
-            return inLpm * 60;
-        case "gpm":
-            return inLpm / 3.785411784;
-        case "m3/hr":
-            return (inLpm * 60) / 1000;
-        case "bpd":
-            return inLpm / 0.1104078437;
-        default:
-            return inLpm;
-    }
+    return convertBetween(flowRate, fromUnit, toUnit, convertFlowRate);
 }
 
 export function convertViscosity(viscosity: number, unit: string): number {
@@ -158,6 +156,10 @@ export function convertPressure(pressure: number, unit: string): number {
     }
 }
 
+export function convertPressureBetween(pressure: number, fromUnit: string, toUnit: string): number {
+    return convertBetween(pressure, fromUnit, toUnit, convertPressure);
+}
+
 
 
 export const lengthUnits = [
@@ -245,6 +247,10 @@ export function convertTemperature(temperature: number, unit: string): number {
         default:
             return temperature * 1;
     }
+}
+
+export function convertTemperatureBetween(temperature: number, fromUnit: string, toUnit: string): number {
+    return convertBetween(temperature, fromUnit, toUnit, convertTemperature);
 }
 
 export function convertThermalConductivity(k: number, unit: string): number {
